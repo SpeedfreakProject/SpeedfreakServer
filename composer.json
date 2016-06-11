@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "name": "speedfreak/server",
+    "description": "The Speedfreak Server.",
+    "keywords": ["framework", "laravel", "speedfreak", "speedfreak-server", "server", "nfsw"],
+    "license": "GPL-3.0",
     "type": "project",
     "require": {
         "php": ">=5.5.9",
