@@ -1,27 +1,35 @@
 # Speedfreak Server
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+Speedfreak is a new server for Need For Speed World, written in PHP. It is effectively a port of [nilzao/soapbox-race](https://github.com/nilzao/soapbox-race), however this is unique in quite a few ways:
+- A sort of modular system: there's the server, the chat server, and the UDP server that currently does not exist.
+- The web-app handles the database and stuff, as well as an API. The web-app does not handle chat at all; that is up to the Java chat server.
+- There is a special launcher, which allows players to add their own servers to play on. In the future, there will _**probably**_ be a server list site. The launcher also has some preset servers.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Setup
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+### Prerequisites
+Before you can begin using the server, please ensure that you have the following things installed:
 
-## Official Documentation
+- [Memcached](https://memcached.org)
+- PHP >=7.0.0, compiled with XML, MySQL, curl
+- The PHP 7 memcached extension
+- The PHP 7 mcrypt extension
+- [Composer](https://getcomposer.org)
+- [Homebrew](http://brew.sh) **(ONLY if you're running the server on a Mac; it makes installing PHP and stuff MUCH easier)**
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+### Installing 
+To install the server, you should run the following command:
+```composer create-project speedfreak/server```
 
-## Contributing
+This will create a new project with the server code. If you get any errors, you probably did something wrong. [Here](https://getcomposer.org/doc/articles/troubleshooting.md) is a guide that may help you.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+After that completes, change your current directory to that of the server by running:
+```cd SERVER_DIRECTORY_NAME```
 
-## Security Vulnerabilities
+Basic information about the server can be found in the `.env` file, towards the bottom. It should be fairly straightforward.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+** more coming soon **
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+The Speedfreak server is open-sourced software licensed under the [GPL v3.0 license](https://opensource.org/licenses/GPL-3.0).
