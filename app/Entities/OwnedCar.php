@@ -1,0 +1,39 @@
+<?php
+/**
+ * This code is part of the Speedfreak Core Server.
+ * Some of the code is based on code written by Nilzao ( https://github.com/nilzao ) and Berkay2578 ( https://github.com/berkay2578 )! Go check out their stuff!
+ * This is mainly a port of their server to PHP, with a twist.
+ * Please feel free to fork this and make your own changes. Just make sure to keep this notice.
+ *
+ * Copyright (c) 2016 CoderLeo / Speedfreak
+ */
+
+namespace Speedfreak\Entities;
+
+use Illuminate\Database\Eloquent\Model;
+use Speedfreak\Entities\Traits\IdLookup;
+
+class OwnedCar extends Model
+{
+    use IdLookup;
+
+    /**
+     * A persona owns a car.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function persona()
+    {
+        return $this->belongsTo(Persona::class, 'personaId');
+    }
+
+    /**
+     * There can be many custom cars for an owned car.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function customCar()
+    {
+        return $this->hasMany(CustomCar::class, 'idParentOwnedCarTrans');
+    }
+}
