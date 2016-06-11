@@ -17,7 +17,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @package Speedfreak\Entities\Custom
  *
  * @Serializer\AccessorOrder("custom", custom={})
- * @Serializer\XmlRoot(name="CustomVinlyTrans")
+ * @Serializer\XmlRoot(name="CustomVinylTrans")
  */
 class VinylTrans
 {
@@ -25,6 +25,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Hash")
+     * @Serializer\Type("string")
      */
     private $Hash;
 
@@ -32,6 +33,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Hue1")
+     * @Serializer\Type("string")
      */
     private $Hue1;
 
@@ -39,6 +41,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Hue2")
+     * @Serializer\Type("string")
      */
     private $Hue2;
 
@@ -46,6 +49,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Hue3")
+     * @Serializer\Type("string")
      */
     private $Hue3;
 
@@ -53,6 +57,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Hue4")
+     * @Serializer\Type("string")
      */
     private $Hue4;
 
@@ -60,6 +65,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Layer")
+     * @Serializer\Type("string")
      */
     private $Layer;
 
@@ -67,6 +73,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Mir")
+     * @Serializer\Type("string")
      */
     private $Mir;
 
@@ -74,6 +81,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Rot")
+     * @Serializer\Type("string")
      */
     private $Rot;
 
@@ -81,6 +89,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Sat1")
+     * @Serializer\Type("string")
      */
     private $Sat1;
 
@@ -88,6 +97,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Sat2")
+     * @Serializer\Type("string")
      */
     private $Sat2;
 
@@ -95,6 +105,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Sat3")
+     * @Serializer\Type("string")
      */
     private $Sat3;
 
@@ -102,6 +113,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Sat4")
+     * @Serializer\Type("string")
      */
     private $Sat4;
 
@@ -109,6 +121,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="ScaleX")
+     * @Serializer\Type("string")
      */
     private $ScaleX;
 
@@ -116,6 +129,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="ScaleY")
+     * @Serializer\Type("string")
      */
     private $ScaleY;
 
@@ -123,6 +137,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Shear")
+     * @Serializer\Type("string")
      */
     private $Shear;
 
@@ -130,6 +145,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="TranX")
+     * @Serializer\Type("string")
      */
     private $TranX;
 
@@ -137,6 +153,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="TranY")
+     * @Serializer\Type("string")
      */
     private $TranY;
 
@@ -144,6 +161,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Var1")
+     * @Serializer\Type("string")
      */
     private $Var1;
 
@@ -151,6 +169,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Var2")
+     * @Serializer\Type("string")
      */
     private $Var2;
 
@@ -158,6 +177,7 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Var3")
+     * @Serializer\Type("string")
      */
     private $Var3;
 
@@ -165,8 +185,59 @@ class VinylTrans
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Var4")
+     * @Serializer\Type("string")
      */
     private $Var4;
+
+    /**
+     * VinylTrans constructor.
+     * @param string $Hash
+     * @param string $Hue1
+     * @param string $Hue2
+     * @param string $Hue3
+     * @param string $Hue4
+     * @param string $Layer
+     * @param string $Mir
+     * @param string $Rot
+     * @param string $Sat1
+     * @param string $Sat2
+     * @param string $Sat3
+     * @param string $Sat4
+     * @param string $ScaleX
+     * @param string $ScaleY
+     * @param string $Shear
+     * @param string $TranX
+     * @param string $TranY
+     * @param string $Var1
+     * @param string $Var2
+     * @param string $Var3
+     * @param string $Var4
+     */
+    public function __construct($Hash, $Hue1, $Hue2, $Hue3, $Hue4, $Layer, $Mir, $Rot, $Sat1, $Sat2, $Sat3, $Sat4, $ScaleX, $ScaleY, $Shear, $TranX, $TranY, $Var1, $Var2, $Var3, $Var4)
+    {
+        $this->Hash = $Hash;
+        $this->Hue1 = $Hue1;
+        $this->Hue2 = $Hue2;
+        $this->Hue3 = $Hue3;
+        $this->Hue4 = $Hue4;
+        $this->Layer = $Layer;
+        $this->Mir = $Mir;
+        $this->Rot = $Rot;
+        $this->Sat1 = $Sat1;
+        $this->Sat2 = $Sat2;
+        $this->Sat3 = $Sat3;
+        $this->Sat4 = $Sat4;
+        $this->ScaleX = $ScaleX;
+        $this->ScaleY = $ScaleY;
+        $this->Shear = $Shear;
+        $this->TranX = $TranX;
+        $this->TranY = $TranY;
+        $this->Var1 = $Var1;
+        $this->Var2 = $Var2;
+        $this->Var3 = $Var3;
+        $this->Var4 = $Var4;
+    }
+
 
     /**
      * @return string

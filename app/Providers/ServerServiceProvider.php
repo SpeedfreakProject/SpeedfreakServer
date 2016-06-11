@@ -10,6 +10,7 @@
 
 namespace Speedfreak\Providers;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Support\ServiceProvider;
 use Speedfreak\Contracts\State as StateContract;
 use Speedfreak\Management\State;
@@ -26,6 +27,8 @@ class ServerServiceProvider extends ServiceProvider
         $this->app->singleton(StateContract::class, function() {
             return app(State::class);
         });
+
+        AnnotationRegistry::registerLoader('class_exists');
     }
 
     /**
