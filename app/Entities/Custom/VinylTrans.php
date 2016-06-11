@@ -16,7 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Class VinylTrans
  * @package Speedfreak\Entities\Custom
  *
- * @Serializer\AccessorOrder("custom", custom={})
+ * @Serializer\AccessorOrder("alphabetical")
  * @Serializer\XmlRoot(name="CustomVinylTrans")
  */
 class VinylTrans

@@ -2,13 +2,12 @@
 
 namespace Speedfreak\Entities\Converters;
 
-use SimpleXMLElement;
 use Speedfreak\Contracts\IConverter;
-use Speedfreak\Entities\Custom\VinylTrans;
+use Speedfreak\Entities\Types\VinylsType;
+use Speedfreak\Entities\Utilities\Marshaller;
 
 class VinylsConverter implements IConverter
 {
-
     /**
      * Convert a string to the appropriate object.
      *
@@ -17,27 +16,17 @@ class VinylsConverter implements IConverter
      */
     public function convertToEntityAttribute(string $xmlString)
     {
-        $element = new SimpleXMLElement($xmlString);
-        $vinylTrans = $element->xpath('CustomVinylTrans');
-        $newVinylTrans = [];
-
-        foreach($vinylTrans as $element) {
-            $element = (array) $element;
-
-            array_push($newVinylTrans, new VinylTrans(
-                
-            ));
-        }
+        return Marshaller::unmarshal($xmlString, VinylsType::class);
     }
 
     /**
      * Convert an object to an XML string.
      *
-     * @param $item
+     * @param VinylsType $item
      * @return string
      */
     public function convertToDatabaseColumn($item)
     {
-        // TODO: Implement convertToDatabaseColumn() method.
+        return Marshaller::marshal($item);
     }
 }

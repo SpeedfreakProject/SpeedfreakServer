@@ -16,16 +16,25 @@ use Speedfreak\Entities\Custom\VinylTrans;
 /**
  * Class VinylsType
  * @package Speedfreak\Entities\Types
- * @Serializer\Type("Speedfreak\Entities\Types\VinylsType")
  * @Serializer\XmlRoot(name="Vinyls")
  */
 class VinylsType
 {
     /**
      * @var VinylTrans[]
-     * @Serializer\XmlList(entry="CustomVinylTrans")
+     * @Serializer\Type("array<Speedfreak\Entities\Custom\VinylTrans>")
+     * @Serializer\XmlList(entry="CustomVinylTrans", inline = true)
      */
     private $customVinylTrans;
+
+    /**
+     * VinylsType constructor.
+     * @param array $customVinylTrans
+     */
+    public function __construct(array $customVinylTrans = [])
+    {
+        $this->customVinylTrans = $customVinylTrans;
+    }
 
     /**
      * @return \Speedfreak\Entities\Custom\VinylTrans[]

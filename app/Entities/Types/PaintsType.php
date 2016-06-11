@@ -10,16 +10,22 @@
 
 namespace Speedfreak\Entities\Types;
 
-use Speedfreak\Constants;
+use JMS\Serializer\Annotation as Serializer;
 use Speedfreak\Entities\Custom\PaintTrans;
-use SimpleXMLElement;
 
+/**
+ * Class PaintsType
+ * @package Speedfreak\Entities\Types
+ * @Serializer\XmlRoot(name="Paints")
+ */
 class PaintsType
 {
     /**
      * @var PaintTrans[]
+     * @Serializer\XmlList(inline=true, entry="CustomPaintTrans")
+     * @Serializer\Type("array<Speedfreak\Entities\Custom\PaintTrans>")
      */
-    public $customPaintTrans = [];
+    private $customPaintTrans = [];
 
     /**
      * PaintsType constructor.
