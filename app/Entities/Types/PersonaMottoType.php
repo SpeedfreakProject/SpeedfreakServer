@@ -10,7 +10,58 @@
 
 namespace Speedfreak\Entities\Types;
 
+use JMS\Serializer\Annotation as Serializer;
+
+/**
+ * Class PersonaMottoType
+ * @package Speedfreak\Entities\Types
+ *
+ * @Serializer\XmlRoot(name="PersonaMotto")
+ * @Serializer\AccessorOrder("custom", custom={"message", "personaId"})
+ */
 class PersonaMottoType
 {
+    /**
+     * @var string
+     * @Serializer\Type("string")
+     */
+    private $message = "";
 
+    /**
+     * @var int
+     * @Serializer\Type("int")
+     */
+    private $personaId = -1;
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPersonaId()
+    {
+        return $this->personaId;
+    }
+
+    /**
+     * @param int $personaId
+     */
+    public function setPersonaId($personaId)
+    {
+        $this->personaId = $personaId;
+    }
 }

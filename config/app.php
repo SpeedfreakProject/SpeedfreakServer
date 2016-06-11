@@ -156,6 +156,7 @@ return [
         Speedfreak\Providers\EventServiceProvider::class,
         Speedfreak\Providers\RouteServiceProvider::class,
         Speedfreak\Providers\ServerServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*

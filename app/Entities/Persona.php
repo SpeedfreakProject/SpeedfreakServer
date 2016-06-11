@@ -43,4 +43,24 @@ class Persona extends Model implements IValidationEntity
     {
         return $this->hasMany(OwnedCar::class);
     }
+
+    /**
+     * Get the persona's reputation.
+     *
+     * @return float
+     */
+    public function getRep() : float
+    {
+        return $this->rep;
+    }
+
+    /**
+     * Get the persona's reputation at their current level.
+     *
+     * @return float
+     */
+    public function getRepAtCurrentLevel() : float
+    {
+        return $this->repAtCurrentLevel;
+    }
 }

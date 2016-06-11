@@ -6,3 +6,4 @@ Homestead.yaml
 Homestead.json
 .env
 copy.daemon.plist
+.phpstorm.meta.php

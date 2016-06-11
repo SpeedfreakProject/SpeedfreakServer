@@ -2,6 +2,7 @@
 
 namespace Speedfreak\Entities\Utilities;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 use JMS\Serializer\SerializerBuilder;
@@ -16,7 +17,8 @@ class Marshaller
      */
     public static function marshal($object) : string
     {
-        if (is_object($object) && $object instanceof Model) throw new InvalidArgumentException("Can not marshal models, they should have a wrapper class");
+        if (!is_object($object)) throw new InvalidArgumentException("What? That's not an object.");
+        if ($object instanceof Model || $object instanceof Collection) throw new InvalidArgumentException("Can not marshal models or model collections, they should have a wrapper class");
 
         $serializer = SerializerBuilder::create()->build();
 
