@@ -40,4 +40,7 @@ Route::group(['prefix' => 'Speedfreak/Engine'], function() {
     Route::get('Server/Statistics', 'ServerStatsController@statistics');
     Route::get('Server/Info', 'ServerStatsController@info');
     Route::get('Server/InfoUI', 'ServerStatsController@infoUI');
+
+    // Chat
+    Route::get('Session/GetChatInfo', 'SessionController@getChatInfo');
 });
