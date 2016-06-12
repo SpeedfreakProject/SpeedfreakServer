@@ -16,7 +16,7 @@ use SimpleXMLElement;
 
 class DefaultController extends Controller
 {
-    public function systeminfo()
+    public function systemInfo()
     {
         $xml = new SimpleXMLElement('<SystemInfo></SystemInfo>');
         $xml->addChild('Branch', 'debug');
@@ -43,7 +43,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function getusersettings()
+    public function getUserSettings()
     {
         $xml = new SimpleXMLElement('<User_Settings></User_Settings>');
         $xml->addChild('CarCacheAgeLimit', 600);
@@ -71,7 +71,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function getfriendlistfromuserid()
+    public function getFriendListFromUserId()
     {
         return response(
             (new SimpleXMLElement('<PersonaFriendsList/>'))->asXML(),

@@ -13,6 +13,7 @@ namespace Speedfreak\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Speedfreak\Entities\Converters\PaintsConverter;
 use Speedfreak\Entities\Types\PaintsType;
+use Speedfreak\Entities\Utilities\Marshaller;
 
 class CustomCar extends Model
 {
@@ -28,8 +29,6 @@ class CustomCar extends Model
 
     public function getPaintsAttribute($xml)
     {
-        if (!is_string($xml)) return $xml;
-
         return (new PaintsConverter)->convertToEntityAttribute($xml);
     }
 

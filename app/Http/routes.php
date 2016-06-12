@@ -24,9 +24,9 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'Speedfreak/Engine'], function() {
-    Route::get('getusersettings', 'DefaultController@getusersettings');
-    Route::get('systeminfo', 'DefaultController@systeminfo');
-    Route::get('getfriendlistfromuserid', 'DefaultController@getfriendlistfromuserid');
+    Route::get('getusersettings', 'DefaultController@getUserSettings');
+    Route::get('systeminfo', 'DefaultController@systemInfo');
+    Route::get('getfriendlistfromuserid', 'DefaultController@getFriendListFromUserId');
 
     // Authentication
     Route::post('User/AuthenticateUser', 'UserController@authenticateUser');

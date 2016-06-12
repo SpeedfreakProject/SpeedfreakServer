@@ -24,6 +24,7 @@ class PersonaBaseType
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Badges")
+     * @Serializer\Type("string")
      */
     protected $badges;
 
@@ -31,6 +32,7 @@ class PersonaBaseType
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="IconIndex")
+     * @Serializer\Type("integer")
      */
     protected $iconIndex;
 
@@ -38,6 +40,7 @@ class PersonaBaseType
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Level")
+     * @Serializer\Type("integer")
      */
     protected $level;
 
@@ -45,6 +48,7 @@ class PersonaBaseType
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Motto")
+     * @Serializer\Type("string")
      */
     protected $motto;
 
@@ -52,6 +56,7 @@ class PersonaBaseType
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Name")
+     * @Serializer\Type("string")
      */
     protected $name;
 
@@ -59,6 +64,7 @@ class PersonaBaseType
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="PersonaId")
+     * @Serializer\Type("integer")
      */
     protected $personaId;
 
@@ -66,6 +72,7 @@ class PersonaBaseType
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Presence")
+     * @Serializer\Type("integer")
      */
     protected $presence;
 
@@ -73,13 +80,31 @@ class PersonaBaseType
      * @var float
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="Score")
+     * @Serializer\Type("double")
      */
     protected $score;
+
+    /**
+     * @var float
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\SerializedName(value="RepAtCurrentLevel")
+     * @Serializer\Type("double")
+     */
+    protected $repAtCurrentLevel;
+
+    /**
+     * @var float
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\SerializedName(value="Rep")
+     * @Serializer\Type("double")
+     */
+    protected $rep;
 
     /**
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName(value="UserId")
+     * @Serializer\Type("integer")
      */
     protected $userId;
 
@@ -225,5 +250,37 @@ class PersonaBaseType
     public function setUserId($userId)
     {
         $this->userId = $userId;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRepAtCurrentLevel()
+    {
+        return $this->repAtCurrentLevel;
+    }
+
+    /**
+     * @param float $repAtCurrentLevel
+     */
+    public function setRepAtCurrentLevel($repAtCurrentLevel)
+    {
+        $this->repAtCurrentLevel = $repAtCurrentLevel;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRep()
+    {
+        return $this->rep;
+    }
+
+    /**
+     * @param float $rep
+     */
+    public function setRep($rep)
+    {
+        $this->rep = $rep;
     }
 }

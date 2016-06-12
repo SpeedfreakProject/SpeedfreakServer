@@ -11,6 +11,7 @@
 namespace Speedfreak\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use JMS\Serializer\Annotation as Serializer;
 use Speedfreak\Entities\Traits\IdLookup;
 use Speedfreak\Traits\ValidationEntity;
 use Speedfreak\Contracts\IValidationEntity;
