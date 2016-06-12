@@ -31,7 +31,7 @@ class CarsOwnedByPersonaList
     /**
      * @param \Speedfreak\Entities\OwnedCar[] $ownedCarList
      */
-    public function setOwnedCarList($ownedCarList)
+    public function setOwnedCarList(array $ownedCarList)
     {
         $this->ownedCarList = $ownedCarList;
     }

@@ -18,7 +18,9 @@ use Speedfreak\Entities\Repositories\ProductRepository;
 use Speedfreak\Contracts\Business\PersonaBO as Contract;
 use Speedfreak\Entities\Types\ArrayOfOwnedCarTrans;
 use Speedfreak\Entities\Types\CarSlotInfoTrans;
+use Speedfreak\Entities\Types\CarsOwnedByPersonaList;
 use Speedfreak\Entities\Types\CommerceSessionResultTransType;
+use Speedfreak\Entities\Types\ObtainableSlotsList;
 use Speedfreak\Entities\Types\UpdatedCarType;
 
 class PersonaBO implements Contract
@@ -56,7 +58,29 @@ class PersonaBO implements Contract
 
     public function carslots(int $personaId) : CarSlotInfoTrans
     {
-        return new CarSlotInfoTrans;
+        $ownedCars = $this->ownedCarRepository->findByPersonaId($personaId);
+        $carSlotInfoTrans = new CarSlotInfoTrans;
+        $carsOwnedByPersonaList = new CarsOwnedByPersonaList;
+        $carSlotInfoTrans->setCarsOwnedByPersonaList($carsOwnedByPersonaList);
+
+        if ($ownedCars->count() > 0) {
+            $carsOwnedByPersonaList->setOwnedCarList($ownedCars->all());
+        }
+
+        $carSlotInfoTrans->setDefaultOwnedCarIndex($this->personaRepository->findById($personaId)->curCarIndex);
+        $carSlotInfoTrans->setOwnedCarSlotsCount(1);
+
+        $obtainableSlotsList = new ObtainableSlotsList;
+
+        $productList = [];
+        $carSlotProductData = $this->productRepository->findByProductId('SRV-CARSLOT');
+
+        $productList[] = $carSlotProductData;
+        $obtainableSlotsList->setProductTransList($productList);
+
+        $carSlotInfoTrans->setObtainableSlots($obtainableSlotsList);
+
+        return $carSlotInfoTrans;
     }
 
     public function commerce(int $personaId, UpdatedCarType $updatedCar) : CommerceSessionResultTransType
@@ -92,16 +116,35 @@ class PersonaBO implements Contract
 
     public function changeDefaultCar(int $personaId, int $defaultCarId)
     {
-        // TODO: Implement changeDefaultCar() method.
+        $persona = $this->personaRepository->findById($personaId);
+        $ownedCars = $this->ownedCarRepository->findByPersonaId($personaId);
+        $i = 0;
+
+        foreach($ownedCars as $ownedCar) {
+            if ($ownedCar->uniqueCarId == $defaultCarId) {
+                break;
+            }
+            $i++;
+        }
+
+        $persona->forceFill([
+            'curCarIndex' => $i
+        ])->save();
     }
 
     public function getCars(int $personaId) : ArrayOfOwnedCarTrans
     {
-        return new ArrayOfOwnedCarTrans;
+        $arrayOfOwnedCarTrans = new ArrayOfOwnedCarTrans;
+        $persona = $this->personaRepository->findById($personaId);
+        $arrayOfOwnedCarTrans->setOwnedCarTrans($persona->ownedCars->all());
+
+        return $arrayOfOwnedCarTrans;
     }
 
     public function sellCar(int $personaId, int $carId)
     {
-        // TODO: Implement sellCar() method.
+        OwnedCar::findByIdOrFail($carId)->delete();
+
+        return $this->defaultCar($personaId);
     }
 }
