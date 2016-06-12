@@ -4,32 +4,36 @@
  * Some of the code is based on code written by Nilzao ( https://github.com/nilzao ) and Berkay2578 ( https://github.com/berkay2578 )! Go check out their stuff!
  * This is mainly a port of their server to PHP, with a twist.
  * Please feel free to fork this and make your own changes. Just make sure to keep this notice.
- *
  * Copyright (c) 2016 CoderLeo / Speedfreak
  */
 
 namespace Speedfreak\Entities\Converters;
 
 use Speedfreak\Contracts\IConverter;
-use Speedfreak\Entities\Types\PaintsType;
+use Speedfreak\Entities\Types\SkillModPartsType;
 use Speedfreak\Entities\Utilities\Marshaller;
 
-class PaintsConverter implements IConverter
+class SkillModPartsConverter implements IConverter
 {
     /**
-     * @inheritdoc
+     * Convert a string to the appropriate object.
+     *
+     * @param string $xmlString
+     * @return mixed
      */
-    public function convertToEntityAttribute(string $xmlString) : PaintsType
+    public function convertToEntityAttribute(string $xmlString)
     {
-        return Marshaller::unmarshal($xmlString, PaintsType::class);
+        return Marshaller::unmarshal($xmlString, SkillModPartsType::class);
     }
 
     /**
-     * @param PaintsType $item
-     * @return mixed|string
+     * Convert an object to an XML string.
+     *
+     * @param $item
+     * @return string
      */
     public function convertToDatabaseColumn($item)
     {
-        return Marshaller::marshal($item, PaintsType::class);
+        return Marshaller::marshal($item, SkillModPartsType::class);
     }
 }

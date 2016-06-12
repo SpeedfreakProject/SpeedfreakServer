@@ -11,11 +11,28 @@
 namespace Speedfreak\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Speedfreak\Entities\Types\LobbyInfoType;
 
 class Lobby extends Model
 {
+    protected $dates = ['lobbyDateTimeStart'];
+
     public function entrants()
     {
         return $this->hasMany(LobbyEntrant::class);
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(EventDefinition::class);
+    }
+
+    public function getLobbyType()
+    {
+        $info = new LobbyInfoType;
+        $info->setEvent($this->event->getType());
+        $info->setLobbyDateTimeStart($this->lobbyDateTimeStart);
+
+        return $info;
     }
 }

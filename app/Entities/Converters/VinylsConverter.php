@@ -34,6 +34,6 @@ class VinylsConverter implements IConverter
      */
     public function convertToDatabaseColumn($item)
     {
-        return Marshaller::marshal($item);
+        return Marshaller::marshal($item, VinylsType::class);
     }
 }

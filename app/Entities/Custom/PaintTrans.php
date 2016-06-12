@@ -10,16 +10,43 @@
 
 namespace Speedfreak\Entities\Custom;
 
+use JMS\Serializer\Annotation as Serializer;
+
 class PaintTrans
 {
+    /**
+     * @var int
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("Slot")
+     */
     private $slot;
 
+    /**
+     * @var int
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("Sat")
+     */
     private $sat;
 
+    /**
+     * @var int
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("Hue")
+     */
     private $hue;
 
+    /**
+     * @var int
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("Var")
+     */
     private $var;
 
+    /**
+     * @var int
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("Group")
+     */
     private $group;
 
     /**

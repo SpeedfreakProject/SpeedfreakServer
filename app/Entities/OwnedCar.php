@@ -17,6 +17,8 @@ class OwnedCar extends Model
 {
     use IdLookup;
 
+    protected $primaryKey = 'uniqueCarId';
+
     /**
      * A persona owns a car.
      *

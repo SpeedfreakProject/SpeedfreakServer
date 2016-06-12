@@ -26,6 +26,9 @@ class SoapboxProductImporter implements IEntityImporter
      */
     public function import(PDO $db, Command $command) : bool
     {
+        /* @var \Illuminate\Console\OutputStyle $output */
+        $output = $command->getOutput();
+
         $statement = $db->prepare('SELECT * FROM PRODUCT');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -34,9 +37,10 @@ class SoapboxProductImporter implements IEntityImporter
             return false;
         }
 
+        $bar = $output->createProgressBar(count($results));
+
         $command->info('Importing ' . count($results) . ' ' . str_plural('product', count($results)));
         foreach($results as $i => $row) {
-            $command->info('Importing product #' . ($i + 1));
             (new Product)->forceCreate([
                 'bundleItems' => $row['bundleItems'],
                 'categoryId' => $row['categoryId'],
@@ -59,8 +63,12 @@ class SoapboxProductImporter implements IEntityImporter
                 'webIcon' => $row['webIcon'],
                 'webLocation' => $row['webLocation'],
             ]);
+
+            $bar->advance();
         }
 
+        $bar->finish();
+        echo PHP_EOL;
         return true;
     }
 }

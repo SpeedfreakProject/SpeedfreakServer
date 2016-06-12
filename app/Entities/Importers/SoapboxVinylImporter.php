@@ -26,6 +26,9 @@ class SoapboxVinylImporter implements IEntityImporter
      */
     public function import(PDO $db, Command $command) : bool
     {
+        /* @var \Illuminate\Console\OutputStyle $output */
+        $output = $command->getOutput();
+
         $statement = $db->prepare('SELECT * FROM VINYLPRODUCT');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -34,9 +37,10 @@ class SoapboxVinylImporter implements IEntityImporter
             return false;
         }
 
+        $bar = $output->createProgressBar(count($results));
+
         $command->info('Importing ' . count($results) . ' ' . str_plural('vinyl', count($results)));
         foreach($results as $i => $row) {
-            $command->info('Importing vinyl #' . ($i + 1));
             (new VinylProduct)->forceCreate([
                 'bundleItems' => $row['bundleItems'],
                 'categoryId' => $row['categoryId'],
@@ -59,8 +63,12 @@ class SoapboxVinylImporter implements IEntityImporter
                 'webIcon' => $row['webIcon'],
                 'webLocation' => $row['webLocation'],
             ]);
+
+            $bar->advance();
         }
 
+        $bar->finish();
+        echo PHP_EOL;
         return true;
     }
 }

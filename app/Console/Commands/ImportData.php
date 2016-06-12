@@ -11,6 +11,8 @@
 namespace Speedfreak\Console\Commands;
 
 use Illuminate\Console\Command;
+use Speedfreak\Entities\Importers\SoapboxCustomCarImporter;
+use Speedfreak\Entities\Importers\SoapboxOwnedCarImporter;
 use Speedfreak\Entities\Importers\SoapboxPersonaImporter;
 use Speedfreak\Entities\Importers\SoapboxProductImporter;
 use Speedfreak\Entities\Importers\SoapboxUserImporter;
@@ -38,6 +40,8 @@ class ImportData extends Command
         SoapboxPersonaImporter::class,
         SoapboxVinylImporter::class,
         SoapboxUserImporter::class,
+        SoapboxOwnedCarImporter::class,
+        SoapboxCustomCarImporter::class,
     ];
 
     /**

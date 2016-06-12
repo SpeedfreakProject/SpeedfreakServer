@@ -10,7 +10,37 @@
 
 namespace Speedfreak\Entities\Types;
 
+use JMS\Serializer\Annotation as Serializer;
+use Speedfreak\Entities\Trans\SkillModPartTrans;
+
+/**
+ * Class SkillModPartsType
+ * @package Speedfreak\Entities\Types
+ * @Serializer\XmlRoot(name="SkillModParts")
+ */
 class SkillModPartsType
 {
+    /**
+     * @var SkillModPartTrans[]
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\XmlList(entry="SkillModPartTrans", inline=true)
+     * @Serializer\Type("array<Speedfreak\Entities\Trans\SkillModPartTrans>")
+     */
+    protected $skillModPartTrans = [];
 
+    /**
+     * @return \Speedfreak\Entities\Trans\SkillModPartTrans[]
+     */
+    public function getSkillModPartTrans()
+    {
+        return $this->skillModPartTrans;
+    }
+
+    /**
+     * @param \Speedfreak\Entities\Trans\SkillModPartTrans[] $skillModPartTrans
+     */
+    public function setSkillModPartTrans($skillModPartTrans)
+    {
+        $this->skillModPartTrans = $skillModPartTrans;
+    }
 }

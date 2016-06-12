@@ -10,7 +10,79 @@
 
 namespace Speedfreak\Entities\Types;
 
+use JMS\Serializer\Annotation as Serializer;
+
 class SessionInfoType
 {
+    /**
+     * @var ChallengeType
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("Speedfreak\Entities\Types\ChallengeType")
+     * @Serializer\SerializedName("Challenge")
+     */
+    protected $challenge;
 
+    /**
+     * @var int
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("EventId")
+     */
+    protected $eventId;
+
+    /**
+     * @var int
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("SessionId")
+     */
+    protected $sessionId;
+
+    /**
+     * @return ChallengeType
+     */
+    public function getChallenge()
+    {
+        return $this->challenge;
+    }
+
+    /**
+     * @param ChallengeType $challenge
+     */
+    public function setChallenge($challenge)
+    {
+        $this->challenge = $challenge;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEventId()
+    {
+        return $this->eventId;
+    }
+
+    /**
+     * @param int $eventId
+     */
+    public function setEventId($eventId)
+    {
+        $this->eventId = $eventId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
+    }
+
+    /**
+     * @param int $sessionId
+     */
+    public function setSessionId($sessionId)
+    {
+        $this->sessionId = $sessionId;
+    }
 }
