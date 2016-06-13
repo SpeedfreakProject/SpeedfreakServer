@@ -13,6 +13,7 @@ namespace Speedfreak\Entities;
 use Illuminate\Database\Eloquent\Model;
 use JMS\Serializer\Annotation as Serializer;
 use Speedfreak\Entities\Traits\IdLookup;
+use Speedfreak\Entities\Types\PersonaBaseType;
 use Speedfreak\Traits\ValidationEntity;
 use Speedfreak\Contracts\IValidationEntity;
 use Speedfreak\User;
@@ -63,5 +64,24 @@ class Persona extends Model implements IValidationEntity
     public function getRepAtCurrentLevel() : float
     {
         return $this->repAtCurrentLevel;
+    }
+
+    public function getPersonaType() : PersonaBaseType
+    {
+        $type = new PersonaBaseType();
+
+        $type->setPersonaId($this->getKey());
+        $type->setBadges('');
+        $type->setIconIndex($this->iconIndex);
+        $type->setLevel($this->level);
+        $type->setMotto($this->motto);
+        $type->setName($this->name);
+        $type->setPresence(1);
+        $type->setScore($this->score);
+        $type->setUserId($this->user_id);
+        $type->setRep($this->getRep());
+        $type->setRepAtCurrentLevel($this->getRepAtCurrentLevel());
+
+        return $type;
     }
 }
