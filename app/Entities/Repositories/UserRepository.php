@@ -103,7 +103,7 @@ class UserRepository implements Contract
 
         foreach($personas as $persona) {
             $profileDataType = new ProfileDataType;
-            $profileDataType->setBoost(Constants::DEFAULT_PERSONA_CASH + 5000);
+            $profileDataType->setBoost(20000000);
             $profileDataType->setName($persona->name);
             $profileDataType->setCash($persona->cash);
             $profileDataType->setLevel($persona->level);

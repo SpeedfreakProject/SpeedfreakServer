@@ -5,11 +5,18 @@ namespace Speedfreak\Http\Controllers;
 use Illuminate\Http\Request;
 
 use SimpleXMLElement;
+use Speedfreak\Entities\Types\ArrayOfInt;
+use Speedfreak\Entities\Utilities\Marshaller;
 use Speedfreak\Http\Requests;
 use Speedfreak\Management\Controller as NFSWController;
 
 class DriverPersonaController extends NFSWController
 {
+    public function __construct()
+    {
+        
+    }
+    
     public function getExpLevelPointsMap()
     {
         $map = [
@@ -74,11 +81,9 @@ class DriverPersonaController extends NFSWController
             9992125
         ];
 
-        $element = new SimpleXMLElement("<ArrayOfint></ArrayOfint>");
-        foreach($map as $value) {
-            $element->addChild('int', $value);
-        }
-
-        return $this->sendXml($element->asXML());
+        return $this->sendXml(Marshaller::marshal(
+            new ArrayOfInt($map),
+            ArrayOfInt::class
+        ));
     }
 }

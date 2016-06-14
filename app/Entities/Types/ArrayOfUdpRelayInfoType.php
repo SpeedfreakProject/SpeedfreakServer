@@ -4,7 +4,6 @@
  * Some of the code is based on code written by Nilzao ( https://github.com/nilzao ) and Berkay2578 ( https://github.com/berkay2578 )! Go check out their stuff!
  * This is mainly a port of their server to PHP, with a twist.
  * Please feel free to fork this and make your own changes. Just make sure to keep this notice.
- *
  * Copyright (c) 2016 CoderLeo / Speedfreak
  */
 
@@ -13,32 +12,33 @@ namespace Speedfreak\Entities\Types;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class ArrayOfPersonaBaseType
+ * Class ArrayOfUdpRelayInfoType
  * @package Speedfreak\Entities\Types
- * @Serializer\XmlRoot(name="ArrayOfPersonaBase")
- * @Serializer\AccessorOrder("custom",custom={"personaBase"})
+ * @Serializer\XmlRoot(name="ArrayOfUdpRelayInfo")
  */
-class ArrayOfPersonaBaseType
+class ArrayOfUdpRelayInfoType
 {
     /**
-     * @var PersonaBaseType[]
-     * @Serializer\XmlList(entry="PersonaBase", inline=true)
+     * @var UdpRelayInfoType[]
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\XmlList(inline=true,entry="UdpRelayInfo")
+     * @Serializer\Type("array<Speedfreak\Entities\Types\UdpRelayInfoType>")
      */
-    protected $personaBase;
+    protected $udpRelayInfo = [];
 
     /**
-     * @return PersonaBaseType[]
+     * @return UdpRelayInfoType[]
      */
-    public function getPersonaBase() : array
+    public function getUdpRelayInfo()
     {
-        return $this->personaBase;
+        return $this->udpRelayInfo;
     }
 
     /**
-     * @param PersonaBaseType[] $personaBase
+     * @param UdpRelayInfoType[] $udpRelayInfo
      */
-    public function setPersonaBase(array $personaBase)
+    public function setUdpRelayInfo($udpRelayInfo)
     {
-        $this->personaBase = $personaBase;
+        $this->udpRelayInfo = $udpRelayInfo;
     }
 }

@@ -71,7 +71,7 @@ class Handler extends ExceptionHandler
                 ['Content-Type' => 'application/xml']
             );
         } elseif ($e instanceof ValidationException) {
-            $xml = new SimpleXMLElement(Constants::XML_TEMPLATE_STRING . '<ValidationException></ValidationExceptionTrans>');
+            $xml = new SimpleXMLElement(Constants::XML_TEMPLATE_STRING . '<ValidationExceptionTrans></ValidationExceptionTrans>');
             $xml->addChild('Description', '');
             $xml->addChild('ErrorCode', '3');
             $xml->addChild('InnerException', '');

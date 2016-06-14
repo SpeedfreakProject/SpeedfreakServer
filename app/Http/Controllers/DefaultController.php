@@ -11,7 +11,14 @@
 namespace Speedfreak\Http\Controllers;
 
 use Carbon\Carbon;
+use Speedfreak\Contracts\Exceptions\EngineException;
+use Speedfreak\Entities\Types\ArrayOfCarClassType;
+use Speedfreak\Entities\Types\ArrayOfUdpRelayInfoType;
+use Speedfreak\Entities\Types\CarClassType;
+use Speedfreak\Entities\Types\RegionInfoType;
+use Speedfreak\Entities\Types\SocialSettingsType;
 use Speedfreak\Entities\Types\SystemInfoType;
+use Speedfreak\Entities\Types\UdpRelayInfoType;
 use Speedfreak\Entities\Utilities\Marshaller;
 use Speedfreak\Http\Requests;
 use SimpleXMLElement;
@@ -45,6 +52,62 @@ class DefaultController extends NFSWController
         return $this->sendXml(Marshaller::marshal($info, SystemInfoType::class));
     }
 
+    public function getFriendListFromUserId()
+    {
+        return response(
+            (new SimpleXMLElement('<PersonaFriendsList/>'))->asXML(),
+            200,
+            ['Content-Type' => 'application/xml']
+        );
+    }
+
+    public function carClasses()
+    {
+        $classes = [
+            new CarClassType(-214211446, 999, 750),
+            new CarClassType(-406473455, 599, 500),
+            new CarClassType(-405837480, 749, 600),
+            new CarClassType(415909161, 399, 250),
+            new CarClassType(872416321, 249, 0),
+            new CarClassType(1866825865, 499, 400),
+        ];
+        $arrayOfCarClass = new ArrayOfCarClassType;
+        $arrayOfCarClass->setArrayOfCarClasses($classes);
+
+        return $this->sendXml(Marshaller::marshal($arrayOfCarClass, ArrayOfCarClassType::class));
+    }
+
+    public function getReBroadcasters()
+    {
+        $arrayOfUdpRelayInfo = new ArrayOfUdpRelayInfoType;
+        $arrayOfUdpRelayInfo->setUdpRelayInfo([
+            new UdpRelayInfoType('127.0.0.1', 9999)
+        ]);
+
+        return $this->sendXml(Marshaller::marshal(
+            $arrayOfUdpRelayInfo, ArrayOfUdpRelayInfoType::class
+        ));
+    }
+
+    public function getRegionInfo()
+    {
+        return $this->sendXml(Marshaller::marshal(
+            new RegionInfoType, RegionInfoType::class
+        ));
+    }
+
+    public function loginAnnouncements()
+    {
+        return $this->sendXml('<LoginAnnouncementsDefinition/>');
+    }
+
+    public function getSocialSettings()
+    {
+        return $this->sendXml(Marshaller::marshal(
+            new SocialSettingsType, SocialSettingsType::class
+        ));
+    }
+
     public function getUserSettings()
     {
         $xml = new SimpleXMLElement('<User_Settings></User_Settings>');
@@ -73,12 +136,43 @@ class DefaultController extends NFSWController
         ]);
     }
 
-    public function getFriendListFromUserId()
+    public function getBlockedUserList()
     {
-        return response(
-            (new SimpleXMLElement('<PersonaFriendsList/>'))->asXML(),
-            200,
-            ['Content-Type' => 'application/xml']
-        );
+        return $this->sendXml('<ArrayOflong/>');
+    }
+
+    public function getBlockersByUsers()
+    {
+        return $this->sendXml('<ArrayOflong/>');
+    }
+
+    public function heartbeat()
+    {
+        return $this->sendXml('');
+    }
+
+    public function newsArticles()
+    {
+        return $this->sendXml('<ArrayOfNewsArticleTrans />');
+    }
+
+    public function getSocialNetworkInfo()
+    {
+        return $this->sendXml('<SocialNetworkInfo />');
+    }
+
+    public function setSocialSettings()
+    {
+        return $this->sendXml('');
+    }
+
+    public function addFriendRequest()
+    {
+        return $this->sendXml('');
+    }
+
+    public function sendChatAnnouncement()
+    {
+        throw new EngineException("Not implemented yet ;)");
     }
 }

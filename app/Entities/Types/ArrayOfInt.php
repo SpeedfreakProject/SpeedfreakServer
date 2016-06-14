@@ -4,7 +4,6 @@
  * Some of the code is based on code written by Nilzao ( https://github.com/nilzao ) and Berkay2578 ( https://github.com/berkay2578 )! Go check out their stuff!
  * This is mainly a port of their server to PHP, with a twist.
  * Please feel free to fork this and make your own changes. Just make sure to keep this notice.
- *
  * Copyright (c) 2016 CoderLeo / Speedfreak
  */
 
@@ -13,32 +12,41 @@ namespace Speedfreak\Entities\Types;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class ArrayOfPersonaBaseType
+ * Class ArrayOfInt
  * @package Speedfreak\Entities\Types
- * @Serializer\XmlRoot(name="ArrayOfPersonaBase")
- * @Serializer\AccessorOrder("custom",custom={"personaBase"})
+ * @Serializer\XmlRoot(name="ArrayOfint")
  */
-class ArrayOfPersonaBaseType
+class ArrayOfInt
 {
     /**
-     * @var PersonaBaseType[]
-     * @Serializer\XmlList(entry="PersonaBase", inline=true)
+     * @var int[]
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\XmlList(inline=true,entry="int")
      */
-    protected $personaBase;
+    protected $integers = [];
 
     /**
-     * @return PersonaBaseType[]
+     * ArrayOfInt constructor.
+     * @param \int[] $integers
      */
-    public function getPersonaBase() : array
+    public function __construct(array $integers = [])
     {
-        return $this->personaBase;
+        $this->integers = $integers;
     }
 
     /**
-     * @param PersonaBaseType[] $personaBase
+     * @return \int[]
      */
-    public function setPersonaBase(array $personaBase)
+    public function getIntegers()
     {
-        $this->personaBase = $personaBase;
+        return $this->integers;
+    }
+
+    /**
+     * @param \int[] $integers
+     */
+    public function setIntegers($integers)
+    {
+        $this->integers = $integers;
     }
 }

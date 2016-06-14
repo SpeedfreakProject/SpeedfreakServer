@@ -27,6 +27,19 @@ Route::group(['prefix' => 'Speedfreak/Engine'], function() {
     Route::get('getusersettings', 'DefaultController@getUserSettings');
     Route::get('systeminfo', 'DefaultController@systemInfo');
     Route::get('getfriendlistfromuserid', 'DefaultController@getFriendListFromUserId');
+    Route::get('carclasses', 'DefaultController@carClasses');
+    Route::get('getrebroadcasters', 'DefaultController@getReBroadcasters');
+    Route::get('getregioninfo', 'DefaultController@getRegionInfo');
+    Route::get('loginAnnouncements', 'DefaultController@loginAnnouncements');
+    Route::get('getsocialsettings', 'DefaultController@getSocialSettings');
+    Route::get('getblockeduserlist', 'DefaultController@getBlockedUserList');
+    Route::get('getblockersbyusers', 'DefaultController@getBlockersByUsers');
+    Route::get('heartbeat', 'DefaultController@heartbeat');
+    Route::get('newsArticles', 'DefaultController@newsArticles');
+    Route::get('getsocialnetworkinfo', 'DefaultController@getSocialNetworkInfo');
+    Route::get('setsocialsettings', 'DefaultController@setSocialSettings');
+    Route::get('addfriendrequest', 'DefaultController@addFriendRequest');
+    Route::get('sendChatAnnouncement', 'DefaultController@sendChatAnnouncement');
 
     // Authentication
     Route::post('User/AuthenticateUser', 'UserController@authenticateUser');

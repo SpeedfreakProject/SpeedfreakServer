@@ -16,7 +16,10 @@ use Speedfreak\Constants;
 use Speedfreak\Contracts\Exceptions\EngineException;
 use Speedfreak\Contracts\State;
 use Speedfreak\Entities\Repositories\UserRepository;
+use Speedfreak\Entities\Types\LoginDataType;
+use Speedfreak\Entities\Utilities\Marshaller;
 use Speedfreak\Http\Requests;
+use Speedfreak\Http\Requests\RegisterRequest;
 use Speedfreak\Management\Controller as NFSWController;
 use SimpleXMLElement;
 
@@ -48,46 +51,47 @@ class UserController extends NFSWController
     public function getPermanentSession(UserRepository $userRepository)
     {
         $userId = (int) $this->getHeader('userId');
-        $this->state->validateSecurityToken();
         $token = shuffleString($this->getSecureRandomText());
+        $this->state->validateSecurityToken();
         $userInfo = $userRepository->getPermanentSession($userId, $token);
-        $this->setSessionEntry("SecurityToken", $token);
-        $serializer = SerializerBuilder::create()->build();
 
-        return $this->sendXml($serializer->serialize($userInfo, 'xml'));
+        $this->setSessionEntry("SecurityToken", $token);
+
+        return $this->sendXml(Marshaller::marshal($userInfo));
     }
 
     /**
      * Authenticate a user.
      * @param UserRepository $userRepository
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function authenticateUser(UserRepository $userRepository)
     {
+        $this->validateRequest([
+            'password' => 'required|string|min:8|max:255',
+        ]);
+
         $result = $userRepository->authenticate($this->getParam('email', ''), $this->getParam('password', ''));
         $token = shuffleString((string) time(), 16);
 
         $this->state->createSessionEntry($result, $token);
-        $xml = new SimpleXMLElement('<LoginData></LoginData>');
-        $xml->addChild('UserId', $result);
-        $xml->addChild('LoginToken', $token);
 
-        return $this->sendXml($xml->asXML());
+        $data = new LoginDataType;
+        $data->setUserId($result);
+        $data->setLoginToken($token);
+
+        return $this->sendXml(Marshaller::marshal($data, LoginDataType::class));
     }
 
     /**
      * Register a user.
+     * @param RegisterRequest $registerRequest
      * @param UserRepository $userRepository
-     * @return \Illuminate\Http\Response
+     * @return Response
      * @throws EngineException
      */
-    public function createUser(UserRepository $userRepository)
+    public function createUser(RegisterRequest $registerRequest, UserRepository $userRepository)
     {
-        $this->validateRequest([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8|max:255'
-        ]);
-
         if ($userRepository->createUser($this->getParam('email'), $this->getParam('password'))) {
             return $this->authenticateUser($userRepository);
         } else {
