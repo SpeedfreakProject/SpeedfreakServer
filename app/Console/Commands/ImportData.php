@@ -11,6 +11,7 @@
 namespace Speedfreak\Console\Commands;
 
 use Illuminate\Console\Command;
+use Speedfreak\Contracts\IEntityImporter;
 use Speedfreak\Entities\Importers\SoapboxCustomCarImporter;
 use Speedfreak\Entities\Importers\SoapboxOwnedCarImporter;
 use Speedfreak\Entities\Importers\SoapboxPersonaImporter;
@@ -26,7 +27,7 @@ class ImportData extends Command
      *
      * @var string
      */
-    protected $signature = 'nfsw:data-import {db=SOAPBOX}';
+    protected $signature = 'nfsw:data-import {db=SOAPBOX} {--info}';
 
     /**
      * The console command description.
@@ -59,16 +60,55 @@ class ImportData extends Command
      */
     public function handle()
     {
-        $db = new PDO('mysql:host=localhost;dbname=' . $this->argument('db') . ';charset=utf8mb4', 'root');
+        if ($this->option('info')) {
+            $this->info('Speedfreak Data Importer v1.0.0');
+            $this->warn('Imports data from a Soapbox database.');
+            $this->info('Written by coderleo/leorblx');
+            $headers = ['Class', 'Type'];
+            $data = [
+                [SoapboxProductImporter::class, 'Products'],
+                [SoapboxVinylImporter::class, 'Vinyls'],
+                [SoapboxUserImporter::class, 'Users'],
+                [SoapboxPersonaImporter::class, 'Personas'],
+                [SoapboxOwnedCarImporter::class, 'Owned cars'],
+                [SoapboxCustomCarImporter::class, 'Custom cars'],
+            ];
 
-        foreach($this->importers as $importer) {
-            $this->info('Now importing from ' . $importer);
-            $time = microtime(true);
-            $result = app($importer)->import($db, $this);
-            $now = microtime(true);
+            $this->table($headers, $data);
+        }
+        else
+        {
+            $this->warn('Note: Run this at your own risk. Be sure to back up your database!');
 
-            if (!$result) $this->info('Nothing to do for ' . $importer . '...');
-            $this->info('Finished working with ' . $importer . ' in ' . ($diff = $now - $time) . ' ' . str_plural('second', round($diff, 2)));
+            $db = new PDO('mysql:host=localhost;dbname=' . $this->argument('db') . ';charset=utf8mb4', 'root');
+
+            $new = array_filter($this->importers, function(string $importer) use ($db) {
+                return app($importer)->hasNewStuff($db);
+            });
+
+            if (count($new) == 0) {
+                $this->info('Nothing to import.');
+                return;
+            }
+
+            if (count($new) > 0) {
+                $this->warn('Some importers have new data to insert.');
+                foreach($new as $item) {
+                    $this->info('- ' . $item);
+                }
+            }
+
+            if ($this->confirm('Do you wish to continue?')) {
+                foreach($this->importers as $importer) {
+                    $this->info('Now importing from ' . $importer);
+                    $time = microtime(true);
+                    $result = app($importer)->import($db, $this);
+                    $now = microtime(true);
+
+                    if (!$result) $this->info('Nothing to do for ' . $importer . '...');
+                    $this->info('Finished working with ' . class_basename($importer) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
+                }
+            }
         }
     }
 }
