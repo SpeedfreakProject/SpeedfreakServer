@@ -99,8 +99,8 @@ class ImportData extends Command
             }
 
             if ($this->confirm('Do you wish to continue?')) {
-                foreach($this->importers as $importer) {
-                    $this->info('Now importing from ' . $importer);
+                foreach($new as $importer) {
+                    $this->info('Now importing from ' . class_basename($importer));
                     $time = microtime(true);
                     $result = app($importer)->import($db, $this);
                     $now = microtime(true);

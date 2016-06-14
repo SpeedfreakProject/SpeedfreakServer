@@ -31,6 +31,9 @@ class SoapboxCustomCarImporter implements IEntityImporter
      */
     public function import(PDO $db, Command $command) : bool
     {
+        /* @var \Illuminate\Console\OutputStyle $output */
+        $output = $command->getOutput();
+
         $statement = $db->prepare('SELECT * FROM CUSTOMCAR');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -39,10 +42,10 @@ class SoapboxCustomCarImporter implements IEntityImporter
             return false;
         }
 
+        $bar = $output->createProgressBar(count($results));
         $command->info('Importing ' . count($results) . ' custom ' . str_plural('car', count($results)));
 
         foreach($results as $i => $value) {
-            $command->info('Importing custom car #' . ($i + 1));
             CustomCar::forceCreate([
                 'baseCarId' => $value['BaseCarId'],
                 'carClassHash' => $value['CarClassHash'],
@@ -61,8 +64,11 @@ class SoapboxCustomCarImporter implements IEntityImporter
                 'visualParts' => Marshaller::unmarshal($value['VisualParts'], VisualPartsType::class),
                 'idParentOwnedCarTrans' => $value['IdParentOwnedCarTrans'],
             ]);
+            $bar->advance();
         }
 
+        $bar->finish();
+        echo PHP_EOL;
         return true;
     }
 

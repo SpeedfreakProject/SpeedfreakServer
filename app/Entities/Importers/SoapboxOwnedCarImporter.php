@@ -25,6 +25,9 @@ class SoapboxOwnedCarImporter implements IEntityImporter
      */
     public function import(PDO $db, Command $command) : bool
     {
+        /* @var \Illuminate\Console\OutputStyle $output */
+        $output = $command->getOutput();
+
         $statement = $db->prepare('SELECT * FROM OWNEDCAR');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -33,10 +36,10 @@ class SoapboxOwnedCarImporter implements IEntityImporter
             return false;
         }
 
+        $bar = $output->createProgressBar(count($results));
         $command->info('Importing ' . count($results) . ' owned ' . str_plural('car', count($results)));
 
         foreach($results as $i => $value) {
-            $command->info('Importing owned car #' . ($i + 1));
             OwnedCar::forceCreate([
                 'uniqueCarId' => $value['UniqueCarId'],
                 'durability' => $value['Durability'],
@@ -45,8 +48,11 @@ class SoapboxOwnedCarImporter implements IEntityImporter
                 'ownershipType' => $value['OwnershipType'],
                 'personaId' => $value['PersonaId']
             ]);
+            $bar->advance();
         }
 
+        $bar->finish();
+        echo PHP_EOL;
         return true;
     }
 

@@ -26,6 +26,9 @@ class SoapboxUserImporter implements IEntityImporter
      */
     public function import(PDO $db, Command $command) : bool
     {
+        /* @var \Illuminate\Console\OutputStyle $output */
+        $output = $command->getOutput();
+
         $statement = $db->prepare('SELECT * FROM USER');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -34,15 +37,19 @@ class SoapboxUserImporter implements IEntityImporter
             return false;
         }
 
+        $bar = $output->createProgressBar(count($results));
         $command->info('Importing ' . count($results) . ' ' . str_plural('user', count($results)));
 
         foreach($results as $i => $row) {
-            $command->info('Importing user #' . ($i + 1));
             User::forceCreate([
                 'email' => $row['EMAIL'],
                 'password' => bcrypt($row['PASSWORD']),
             ]);
+            $bar->advance();
         }
+
+        $bar->finish();
+        echo PHP_EOL;
         
         return true;
     }

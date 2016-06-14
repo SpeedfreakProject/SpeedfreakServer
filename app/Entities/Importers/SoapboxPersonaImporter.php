@@ -26,6 +26,9 @@ class SoapboxPersonaImporter implements IEntityImporter
      */
     public function import(PDO $db, Command $command) : bool
     {
+        /* @var \Illuminate\Console\OutputStyle $output */
+        $output = $command->getOutput();
+
         $statement = $db->prepare('SELECT * FROM PERSONA');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -34,10 +37,10 @@ class SoapboxPersonaImporter implements IEntityImporter
             return false;
         }
 
+        $bar = $output->createProgressBar(count($results));
         $command->info('Importing ' . count($results) . ' ' . str_plural('persona', count($results)));
 
         foreach($results as $i => $row) {
-            $command->info('Importing persona #' . ($i + 1));
             Persona::forceCreate([
                 'cash' => $row['CASH'],
                 'curCarIndex' => $row['CURCARINDEX'],
@@ -52,8 +55,11 @@ class SoapboxPersonaImporter implements IEntityImporter
                 'score' => $row['SCORE'],
                 'userId' => $row['USERID'],
             ]);
+            $bar->advance();
         }
-        
+
+        $bar->finish();
+        echo PHP_EOL;
         return true;
     }
 
