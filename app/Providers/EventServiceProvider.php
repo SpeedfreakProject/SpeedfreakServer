@@ -21,8 +21,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Speedfreak\Events\SomeEvent' => [
-            'Speedfreak\Listeners\EventListener',
+        'Speedfreak\Events\Multiplayer\ChangedCurrentMpSession' => [
+            'Speedfreak\Listeners\ChangedCurrentMpSessionListener',
         ],
     ];
 

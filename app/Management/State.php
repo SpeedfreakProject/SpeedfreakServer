@@ -19,6 +19,7 @@ use Speedfreak\Contracts\Exceptions\SessionAlreadyCreatedException;
 use Speedfreak\Contracts\State as Contract;
 use Psr\Log\LogLevel;
 use Speedfreak\Entities\Session;
+use Speedfreak\Management\Session as SFSession;
 
 /**
  * Class State
@@ -53,6 +54,7 @@ class State implements Contract
         $this->logger = $logger;
 
         $this->refreshSessions();
+        $this->loadSessionData();
     }
 
     /**
@@ -220,5 +222,17 @@ class State implements Contract
         return $this->currentSessions->sortByDesc(function(SessionVO $item) {
             return $item->getCreated()->format('Y-m-d H:i:s');
         })->first();
+    }
+
+    public function loadSessionData()
+    {
+        SFSession::setCurrentMpSessionId(
+            $this->cache->tags(self::STATE_CACHE_TAG)->get('currentMpSessionId', SFSession::getCurrentMpSessionId())
+        );
+    }
+
+    public function saveSessionData(int $mpSessionId)
+    {
+        $this->cache->tags(self::STATE_CACHE_TAG)->put('currentMpSessionId', $mpSessionId);
     }
 }

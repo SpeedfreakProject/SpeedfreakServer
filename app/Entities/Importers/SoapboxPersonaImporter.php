@@ -56,4 +56,13 @@ class SoapboxPersonaImporter implements IEntityImporter
         
         return true;
     }
+
+    public function hasNewStuff(PDO $db) : bool
+    {
+        $statement = $db->prepare('SELECT * FROM PERSONA');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return !(count($results) > 0 and Persona::all()->count() >= count($results));
+    }
 }

@@ -79,4 +79,8 @@ interface State
      * @return Request
      */
     public function getRequest() : Request;
+
+    public function loadSessionData();
+
+    public function saveSessionData(int $mpSessionId);
 }

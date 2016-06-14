@@ -65,4 +65,13 @@ class SoapboxCustomCarImporter implements IEntityImporter
 
         return true;
     }
+
+    public function hasNewStuff(PDO $db) : bool
+    {
+        $statement = $db->prepare('SELECT * FROM CUSTOMCAR');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return !(count($results) > 0 and CustomCar::all()->count() >= count($results));
+    }
 }

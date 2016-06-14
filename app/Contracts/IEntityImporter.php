@@ -23,4 +23,6 @@ interface IEntityImporter
      * @return bool
      */
     public function import(PDO $db, Command $command) : bool;
+
+    public function hasNewStuff(PDO $db) : bool;
 }

@@ -49,4 +49,13 @@ class SoapboxOwnedCarImporter implements IEntityImporter
 
         return true;
     }
+
+    public function hasNewStuff(PDO $db) : bool
+    {
+        $statement = $db->prepare('SELECT * FROM OWNEDCAR');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return !(count($results) > 0 and OwnedCar::all()->count() >= count($results));
+    }
 }

@@ -2,17 +2,24 @@
 
 namespace Speedfreak\Listeners;
 
+use Speedfreak\Contracts\State;
 use Speedfreak\Events\Multiplayer\ChangedCurrentMpSession;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ChangedCurrentMpSessionListener implements ShouldQueue
 {
     /**
-     * Create the event listener.
+     * @var State
      */
-    public function __construct()
+    private $state;
+
+    /**
+     * Create the event listener.
+     * @param State $state
+     */
+    public function __construct(State $state)
     {
-        //
+        $this->state = $state;
     }
 
     /**
@@ -23,6 +30,6 @@ class ChangedCurrentMpSessionListener implements ShouldQueue
      */
     public function handle(ChangedCurrentMpSession $event)
     {
-        //
+        $this->state->saveSessionData($event->getCurrentMpSessionId());
     }
 }

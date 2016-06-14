@@ -46,4 +46,13 @@ class SoapboxUserImporter implements IEntityImporter
         
         return true;
     }
+
+    public function hasNewStuff(PDO $db) : bool
+    {
+        $statement = $db->prepare('SELECT * FROM USER');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return !(count($results) > 0 and User::all()->count() >= count($results));
+    }
 }

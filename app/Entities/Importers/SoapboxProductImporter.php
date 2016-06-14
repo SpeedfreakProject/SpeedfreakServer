@@ -71,4 +71,13 @@ class SoapboxProductImporter implements IEntityImporter
         echo PHP_EOL;
         return true;
     }
+
+    public function hasNewStuff(PDO $db) : bool
+    {
+        $statement = $db->prepare('SELECT * FROM PRODUCT');
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return !(count($results) > 0 and Product::all()->count() >= count($results));
+    }
 }

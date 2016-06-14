@@ -10,14 +10,20 @@ class ChangedCurrentMpSession extends Event
 {
     use SerializesModels;
 
+    protected $mpSessionId = 0;
+
     /**
      * Create a new event instance.
-     *
-     * @return void
+     * @param int $mpSessionId
      */
-    public function __construct()
+    public function __construct(int $mpSessionId)
     {
-        //
+        $this->mpSessionId = $mpSessionId;
+    }
+
+    public function getCurrentMpSessionId()
+    {
+        return $this->mpSessionId;
     }
 
     /**
