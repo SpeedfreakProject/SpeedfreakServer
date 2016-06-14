@@ -13,6 +13,7 @@ namespace Speedfreak\Management;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Speedfreak\Contracts\Exceptions\EngineException;
+use Speedfreak\Contracts\State;
 use Speedfreak\Http\Controllers\Controller as NFSWController;
 
 /**
@@ -34,6 +35,20 @@ abstract class Controller extends NFSWController
     }
 
     /**
+     * Get the current security token.
+     *
+     * @return string
+     */
+    protected function getSecurityToken() : string
+    {
+        if ($token = $this->getHeader('securityToken')) {
+            return (string) $token;
+        }
+
+        return null;
+    }
+
+    /**
      * Get a header from the current request.
      *
      * @param string $param
@@ -43,6 +58,11 @@ abstract class Controller extends NFSWController
     protected function getHeader(string $param, $default = null)
     {
         return app('Speedfreak\Contracts\State')->getRequest()->header($param, $default);
+    }
+
+    protected function readInputStream()
+    {
+        return $this->getRequest()->getContent();
     }
 
     /**
@@ -73,9 +93,28 @@ abstract class Controller extends NFSWController
      *
      * @return int
      */
-    protected function getUserId()
+    protected function getUserId() : int
     {
         return (int) $this->getHeader('userId', -1);
+    }
+
+    /**
+     * Get the ID of the currently logged in persona.
+     *
+     * @return int
+     */
+    protected function getLoggedPersonaId() : int
+    {
+        /* @var State $state */
+        $state = app('Speedfreak\Contracts\State');
+        if ($state->hasSession($userId = $this->getUserId())) {
+            $session = $state->getSession($userId);
+            if (($id = $session->getPersonaId() != null) && $id != 0) {
+                return $id;
+            }
+        }
+
+        return -1;
     }
 
     /**

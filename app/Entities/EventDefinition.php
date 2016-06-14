@@ -17,10 +17,12 @@ use Speedfreak\Entities\Types\RewardModesType;
 
 class EventDefinition extends Model
 {
+    protected $primaryKey = 'eventId';
+
     public function getEventType() : EventDefinitionType
     {
         $type = new EventDefinitionType;
-        $type->setEventId($this->id);
+        $type->setEventId($this->getKey());
         $type->setCarClassHash($this->carClassHash);
         $type->setCoins($this->coins);
         $type->setEngagePoint(new EngagePointType);

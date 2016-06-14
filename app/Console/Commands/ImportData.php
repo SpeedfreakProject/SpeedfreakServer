@@ -12,7 +12,10 @@ namespace Speedfreak\Console\Commands;
 
 use Illuminate\Console\Command;
 use Speedfreak\Contracts\IEntityImporter;
+use Speedfreak\Entities\Importers\SoapboxBasketImporter;
+use Speedfreak\Entities\Importers\SoapboxCategoryImporter;
 use Speedfreak\Entities\Importers\SoapboxCustomCarImporter;
+use Speedfreak\Entities\Importers\SoapboxEventImporter;
 use Speedfreak\Entities\Importers\SoapboxOwnedCarImporter;
 use Speedfreak\Entities\Importers\SoapboxPersonaImporter;
 use Speedfreak\Entities\Importers\SoapboxProductImporter;
@@ -36,13 +39,21 @@ class ImportData extends Command
      */
     protected $description = 'Import Soapbox data';
 
+    /**
+     * The importers to use, and what data types they handle.
+     *
+     * @var array
+     */
     protected $importers = [
-        SoapboxProductImporter::class,
-        SoapboxPersonaImporter::class,
-        SoapboxVinylImporter::class,
-        SoapboxUserImporter::class,
-        SoapboxOwnedCarImporter::class,
-        SoapboxCustomCarImporter::class,
+        SoapboxProductImporter::class => 'Products',
+        SoapboxPersonaImporter::class => 'Personas',
+        SoapboxVinylImporter::class => 'Vinyls',
+        SoapboxUserImporter::class => 'Users',
+        SoapboxOwnedCarImporter::class => 'Owned Cars',
+        SoapboxCustomCarImporter::class => 'Custom Cars',
+        SoapboxEventImporter::class => 'Event Definitions',
+        SoapboxBasketImporter::class => 'Basket Definitions',
+        SoapboxCategoryImporter::class => 'Shop Categories',
     ];
 
     /**
@@ -64,27 +75,33 @@ class ImportData extends Command
             $this->info('Speedfreak Data Importer v1.0.0');
             $this->warn('Imports data from a Soapbox database.');
             $this->info('Written by coderleo/leorblx');
+            $this->line('');
+            $this->info('Currently registered importers:');
             $headers = ['Class', 'Type'];
-            $data = [
-                [SoapboxProductImporter::class, 'Products'],
-                [SoapboxVinylImporter::class, 'Vinyls'],
-                [SoapboxUserImporter::class, 'Users'],
-                [SoapboxPersonaImporter::class, 'Personas'],
-                [SoapboxOwnedCarImporter::class, 'Owned cars'],
-                [SoapboxCustomCarImporter::class, 'Custom cars'],
-            ];
+            $data = [];
+            foreach($this->importers as $class => $type) {
+                $data[] = [$class, $type];
+            }
+
+            $data = collect($data)->sortBy(function($item) {
+                return strtolower(class_basename($item[0]));
+            })->values();
 
             $this->table($headers, $data);
         }
         else
         {
+            $this->info('Speedfreak Data Importer v1.0.0');
+            $this->warn('Imports data from a Soapbox database.');
+            $this->info('Written by coderleo/leorblx');
+            sleep(.5);
             $this->warn('Note: Run this at your own risk. Be sure to back up your database!');
 
             $db = new PDO('mysql:host=localhost;dbname=' . $this->argument('db') . ';charset=utf8mb4', 'root');
 
-            $new = array_filter($this->importers, function(string $importer) use ($db) {
-                return app($importer)->hasNewStuff($db);
-            });
+            $new = array_filter($this->importers, function($value, $key) use ($db) {
+                return app($key)->hasNewStuff($db);
+            }, ARRAY_FILTER_USE_BOTH);
 
             if (count($new) == 0) {
                 $this->info('Nothing to import.');
@@ -92,21 +109,23 @@ class ImportData extends Command
             }
 
             if (count($new) > 0) {
-                $this->warn('Some importers have new data to insert.');
-                foreach($new as $item) {
-                    $this->info('- ' . $item);
+                $this->warn('Some importers have new data to insert:');
+                foreach($new as $key => $item) {
+                    $this->info('- ' . $key);
                 }
             }
 
             if ($this->confirm('Do you wish to continue?')) {
-                foreach($new as $importer) {
-                    $this->info('Now importing from ' . class_basename($importer));
+                foreach($new as $importer => $type) {
+                    $this->comment('Now importing from ' . class_basename($importer));
                     $time = microtime(true);
                     $result = app($importer)->import($db, $this);
                     $now = microtime(true);
 
                     if (!$result) $this->info('Nothing to do for ' . $importer . '...');
-                    $this->info('Finished working with ' . class_basename($importer) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
+                    else {
+                        $this->info('Finished working with ' . class_basename($importer) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
+                    }
                 }
             }
         }

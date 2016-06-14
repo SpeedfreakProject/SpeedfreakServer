@@ -12,9 +12,9 @@ namespace Speedfreak\Entities\Importers;
 use Illuminate\Console\Command;
 use PDO;
 use Speedfreak\Contracts\IEntityImporter;
-use Speedfreak\Entities\OwnedCar;
+use Speedfreak\Entities\BasketDefinition;
 
-class SoapboxOwnedCarImporter implements IEntityImporter
+class SoapboxBasketImporter implements IEntityImporter
 {
     /**
      * Import data from another database.
@@ -28,25 +28,23 @@ class SoapboxOwnedCarImporter implements IEntityImporter
         /* @var \Illuminate\Console\OutputStyle $output */
         $output = $command->getOutput();
 
-        $statement = $db->prepare('SELECT * FROM OWNEDCAR');
+        $statement = $db->prepare('SELECT * FROM BASKETDEFINITION');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if (count($results) > 0 and OwnedCar::all()->count() >= count($results)) {
+        if (count($results) > 0 and BasketDefinition::all()->count() >= count($results)) {
             return false;
         }
 
         $bar = $output->createProgressBar(count($results));
-        $command->info('Importing ' . count($results) . ' owned ' . str_plural('car', count($results)));
+        $command->info('Importing ' . count($results) . ' basket ' . str_plural('definition', count($results)));
 
-        foreach($results as $i => $value) {
-            OwnedCar::forceCreate([
-                'uniqueCarId' => $value['UniqueCarId'],
-                'durability' => $value['Durability'],
-                'expirationDate' => $value['ExpirationDate'],
-                'heatLevel' => $value['HeatLevel'],
-                'ownershipType' => $value['OwnershipType'],
-                'personaId' => $value['PersonaId']
+        foreach($results as $value) {
+            BasketDefinition::forceCreate([
+                'id' => $value['id'],
+                'productId' => $value['ProductId'],
+                'ownedCarTrans' => $value['OwnedCarTrans']
             ]);
+
             $bar->advance();
         }
 
@@ -57,10 +55,10 @@ class SoapboxOwnedCarImporter implements IEntityImporter
 
     public function hasNewStuff(PDO $db) : bool
     {
-        $statement = $db->prepare('SELECT * FROM OWNEDCAR');
+        $statement = $db->prepare('SELECT * FROM BASKETDEFINITION');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return !(count($results) > 0 and OwnedCar::all()->count() >= count($results));
+        return !(count($results) > 0 and BasketDefinition::all()->count() >= count($results));
     }
 }

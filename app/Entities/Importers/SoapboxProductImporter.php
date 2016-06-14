@@ -33,7 +33,6 @@ class SoapboxProductImporter implements IEntityImporter
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (count($results) > 0 and Product::all()->count() >= count($results)) {
-            $command->info('Nothing to import.');
             return false;
         }
 

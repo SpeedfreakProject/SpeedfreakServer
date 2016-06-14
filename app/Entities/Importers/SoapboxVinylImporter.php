@@ -33,7 +33,6 @@ class SoapboxVinylImporter implements IEntityImporter
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (count($results) > 0 and VinylProduct::all()->count() >= count($results)) {
-            $command->info('Nothing to import.');
             return false;
         }
 

@@ -5,18 +5,66 @@ namespace Speedfreak\Http\Controllers;
 use Illuminate\Http\Request;
 
 use SimpleXMLElement;
+use Speedfreak\Contracts\Exceptions\PersonaIdMismatchException;
+use Speedfreak\Contracts\State;
+use Speedfreak\Entities\Business\DriverPersonaBO;
 use Speedfreak\Entities\Types\ArrayOfInt;
+use Speedfreak\Entities\Types\ArrayOfPersonaBaseType;
+use Speedfreak\Entities\Types\ArrayOfStringType;
+use Speedfreak\Entities\Types\PersonaIdArrayType;
+use Speedfreak\Entities\Types\PersonaMottoType;
+use Speedfreak\Entities\Types\PersonaPresenceType;
+use Speedfreak\Entities\Types\ProfileDataType;
 use Speedfreak\Entities\Utilities\Marshaller;
 use Speedfreak\Http\Requests;
 use Speedfreak\Management\Controller as NFSWController;
 
 class DriverPersonaController extends NFSWController
 {
-    public function __construct()
+    /**
+     * @var DriverPersonaBO
+     */
+    private $driverPersonaBO;
+
+    /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * @var State
+     */
+    private $state;
+
+    /**
+     * DriverPersonaController constructor.
+     * @param DriverPersonaBO $driverPersonaBO
+     * @param Request $request
+     * @param State $state
+     */
+    public function __construct(DriverPersonaBO $driverPersonaBO, Request $request, State $state)
     {
-        
+        $this->driverPersonaBO = $driverPersonaBO;
+        $this->request = $request;
+        $this->state = $state;
     }
-    
+
+    private function getPersonaId(bool $isBypass = false) : string
+    {
+        $id = (int) $this->request->input('personaId');
+        if ((($id === $this->getLoggedPersonaId() || $this->getLoggedPersonaId() == -1)) || $isBypass) {
+            if (
+                $this->getUserId() != -1 &&
+                $this->getSecurityToken() != '' &&
+                $this->state->getSession($this->getUserId())->getSecurityToken() == $this->getSecurityToken()
+            ) {
+                return $id;
+            }
+        }
+
+        throw new PersonaIdMismatchException($this->getLoggedPersonaId(), $id);
+    }
+
     public function getExpLevelPointsMap()
     {
         $map = [
@@ -85,5 +133,98 @@ class DriverPersonaController extends NFSWController
             new ArrayOfInt($map),
             ArrayOfInt::class
         ));
+    }
+
+    public function reserveName()
+    {
+        $this->validateRequest([
+           'name' => 'required|string'
+        ]);
+
+        $reserveName = $this->driverPersonaBO->reserveName($this->getParam('name'));
+        return $this->sendXml(Marshaller::marshal(
+            $reserveName, ArrayOfStringType::class
+        ));
+    }
+
+    public function unreserveName()
+    {
+        return $this->sendXml('');
+    }
+
+    public function createPersona()
+    {
+        $this->validateRequest([
+            'userId' => 'required',
+            'name' => 'required|string',
+            'iconIndex' => 'required'
+        ]);
+
+        $userId = $this->getParam('userId');
+        $name = $this->getParam('name');
+        $iconIndex = (int) $this->getParam('iconIndex');
+        $createPersona = $this->driverPersonaBO->createPersona($userId, $name, $iconIndex);
+
+        return $this->sendXml(Marshaller::marshal(
+            $createPersona, ProfileDataType::class
+        ));
+    }
+
+    public function getPersonaInfo()
+    {
+        $personaInfo = $this->driverPersonaBO->getPersonaInfo($this->getPersonaId(true));
+        return $this->sendXml(Marshaller::marshal(
+            $personaInfo, ProfileDataType::class
+        ));
+    }
+
+    public function getPersonaBaseFromList()
+    {
+        $xmlTmp = $this->getRequest()->getContent();
+        $xmlTmp = str_replace(':long', '', $xmlTmp);
+        /* @var PersonaIdArrayType $personaIdArrayType */
+        $personaIdArrayType = Marshaller::unmarshal($xmlTmp, PersonaIdArrayType::class);
+        $personaIds = $personaIdArrayType->getPersonaIds()->getArray();
+
+        return $this->sendXml(Marshaller::marshal(
+            $this->driverPersonaBO->getPersonaBaseFromList($personaIds), ArrayOfPersonaBaseType::class
+        ));
+    }
+
+    public function updatePersonaPresence()
+    {
+        return $this->sendXml('');
+    }
+
+    public function deletePersona()
+    {
+        $personaId = $this->getPersonaId();
+        $this->driverPersonaBO->deletePersona($personaId);
+        return $this->sendXml('<long>0</long>');
+    }
+
+    public function updateStatusMessage()
+    {
+        $mottoXml = $this->readInputStream();
+        /* @var PersonaMottoType $personaMottoType */
+        $personaMottoType = Marshaller::unmarshal($mottoXml, PersonaMottoType::class);
+        $message = $personaMottoType->getMessage();
+        $personaId = $personaMottoType->getPersonaId();
+
+        return $this->sendXml(Marshaller::marshal(
+            $this->driverPersonaBO->updateStatusMessage($personaId, $message),
+            PersonaMottoType::class
+        ));
+    }
+
+    public function getPersonaPresenceByName()
+    {
+        $presence = $this->driverPersonaBO->getPersonaPresenceByName($this->getParam('displayName'));
+        if ($presence) {
+            return $this->sendXml(Marshaller::marshal(
+                $presence, PersonaPresenceType::class
+            ));
+        }
+        return $this->sendXml('');
     }
 }

@@ -12,9 +12,9 @@ namespace Speedfreak\Entities\Importers;
 use Illuminate\Console\Command;
 use PDO;
 use Speedfreak\Contracts\IEntityImporter;
-use Speedfreak\Entities\OwnedCar;
+use Speedfreak\Entities\Category;
 
-class SoapboxOwnedCarImporter implements IEntityImporter
+class SoapboxCategoryImporter implements IEntityImporter
 {
     /**
      * Import data from another database.
@@ -28,39 +28,49 @@ class SoapboxOwnedCarImporter implements IEntityImporter
         /* @var \Illuminate\Console\OutputStyle $output */
         $output = $command->getOutput();
 
-        $statement = $db->prepare('SELECT * FROM OWNEDCAR');
+        $statement = $db->prepare('SELECT * FROM CATEGORY');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if (count($results) > 0 and OwnedCar::all()->count() >= count($results)) {
+        if (count($results) > 0 and Category::all()->count() >= count($results)) {
             return false;
         }
 
         $bar = $output->createProgressBar(count($results));
-        $command->info('Importing ' . count($results) . ' owned ' . str_plural('car', count($results)));
+        $command->info('Importing ' . count($results) . ' ' . str_plural('category', count($results)));
 
-        foreach($results as $i => $value) {
-            OwnedCar::forceCreate([
-                'uniqueCarId' => $value['UniqueCarId'],
-                'durability' => $value['Durability'],
-                'expirationDate' => $value['ExpirationDate'],
-                'heatLevel' => $value['HeatLevel'],
-                'ownershipType' => $value['OwnershipType'],
-                'personaId' => $value['PersonaId']
+        foreach($results as $i => $row) {
+            Category::forceCreate([
+                'idcategory' => $row['idcategory'],
+                'catalogVersion' => $row['catalogVersion'],
+                'categories' => $row['categories'],
+                'displayName' => $row['displayName'],
+                'filterType' => $row['filterType'],
+                'icon' => $row['icon'],
+                'id' => $row['id'],
+                'longDescription' => $row['longDescription'],
+                'name' => $row['name'],
+                'priority' => $row['priority'],
+                'shortDescription' => $row['shortDescription'],
+                'showInNavigationPane' => $row['showInNavigationPane'],
+                'showPromoPage' => $row['showPromoPage'],
+                'webIcon' => $row['webIcon'],
             ]);
+
             $bar->advance();
         }
 
         $bar->finish();
         echo PHP_EOL;
+
         return true;
     }
 
     public function hasNewStuff(PDO $db) : bool
     {
-        $statement = $db->prepare('SELECT * FROM OWNEDCAR');
+        $statement = $db->prepare('SELECT * FROM CATEGORY');
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return !(count($results) > 0 and OwnedCar::all()->count() >= count($results));
+        return !(count($results) > 0 and Category::all()->count() >= count($results));
     }
 }
