@@ -25,6 +25,20 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'Speedfreak\Http\Controllers';
 
     /**
+     * All route parameter names in this array will automatically
+     * have a pattern registered for them. The pattern will
+     * ensure that they can be accessed with any casing.
+     *
+     * Basically, case-insensitive routing. You need to use route parameters, though.
+     *
+     * @var array
+     */
+    protected $caseInsensitiveRoutes = [
+        'speedfreak',
+        'speedfreak_engine',
+    ];
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @param  \Illuminate\Routing\Router  $router
@@ -32,8 +46,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        //
-
         parent::boot($router);
     }
 
@@ -46,6 +58,11 @@ class RouteServiceProvider extends ServiceProvider
     public function map(Router $router)
     {
         $this->mapWebRoutes($router);
+        foreach($this->caseInsensitiveRoutes as $caseInsensitiveRoute) {
+            $router->pattern($caseInsensitiveRoute, '(?i:' . $caseInsensitiveRoute . ')');
+        }
+
+        //dd($router->getPatterns());
 
         //
     }
@@ -65,5 +82,42 @@ class RouteServiceProvider extends ServiceProvider
         ], function ($router) {
             require app_path('Http/routes.php');
         });
+    }
+
+    /**
+     * Define any router patterns.
+     *
+     * @param Router $router
+     */
+    protected function definePatterns(Router $router)
+    {
+        foreach($this->caseInsensitiveRoutes as $caseInsensitiveRoute) {
+            $router->pattern($caseInsensitiveRoute, '(?i:' . $caseInsensitiveRoute . ')');
+        }
+
+        dd($router->getPatterns());
+//        $router->pattern('speedfreak', '(?i:speedfreak)');
+//        $router->pattern('speedfreak_engine', '(?i:engine)');
+//        $router->pattern('getrebroadcasters', '(?i:getrebroadcasters)');
+//        $router->pattern('getregioninfo', '(?i:getregioninfo)');
+//        $router->pattern('loginAnnouncements', '(?i:loginAnnouncements)');
+//        $router->pattern('getsocialsettings', '(?i:getsocialsettings)');
+//        $router->pattern('getblockeduserlist', '(?i:getblockeduserlist)');
+//        $router->pattern('getblockersbyusers', '(?i:getblockersbyusers)');
+//        $router->pattern('heartbeat', '(?i:heartbeat)');
+//        $router->pattern('newsArticles', '(?i:newsArticles)');
+//        $router->pattern('getsocialnetworkinfo', '(?i:getsocialnetworkinfo)');
+//        $router->pattern('setsocialsettings', '(?i:setsocialsettings)');
+//        $router->pattern('addfriendrequest', '(?i:addfriendrequest)');
+//        $router->pattern('sendChatAnnouncement', '(?i:sendChatAnnouncement)');
+//        $router->pattern('user', '(?i:user)');
+//        $router->pattern('session', '(?i:session)');
+//        $router->pattern('getChatInfo', '(?i:getChatInfo)');
+//        $router->pattern('driver_persona', '(?i:driverpersona)');
+//        $router->pattern('getExpLevelPointsMap', '(?i:GetExpLevelPointsMap)');
+//
+//        $router->pattern('authenticateUser', '(?i:AuthenticateUser)');
+//        $router->pattern('createUser', '(?i:CreateUser)');
+//        $router->pattern('getPermanentSession', '(?i:GetPermanentSession)');
     }
 }

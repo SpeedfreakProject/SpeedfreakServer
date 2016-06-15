@@ -119,13 +119,9 @@ class ImportData extends Command
                 foreach($new as $importer => $type) {
                     $this->comment('Now importing from ' . class_basename($importer));
                     $time = microtime(true);
-                    $result = app($importer)->import($db, $this);
+                    app($importer)->import($db, $this);
                     $now = microtime(true);
-
-                    if (!$result) $this->info('Nothing to do for ' . $importer . '...');
-                    else {
-                        $this->info('Finished working with ' . class_basename($importer) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
-                    }
+                    $this->info('Finished working with ' . class_basename($importer) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
                 }
             }
         }

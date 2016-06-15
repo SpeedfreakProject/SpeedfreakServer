@@ -12,6 +12,7 @@ namespace Speedfreak\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Speedfreak\Http\Middleware\EnableAnnotationLoading;
+use Speedfreak\Http\Middleware\LowercaseRoutes;
 
 class Kernel extends HttpKernel
 {
@@ -24,7 +25,8 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        EnableAnnotationLoading::class
+        LowercaseRoutes::class,
+        EnableAnnotationLoading::class,
     ];
 
     /**

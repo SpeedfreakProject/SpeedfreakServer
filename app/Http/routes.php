@@ -18,12 +18,11 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function () {
     abort(401);
 });
 
-Route::group(['prefix' => 'Speedfreak/Engine'], function() {
+Route::group(['prefix' => '{speedfreak}/{speedfreak_engine}'], function() {
     Route::get('getusersettings', 'DefaultController@getUserSettings');
     Route::get('systeminfo', 'DefaultController@systemInfo');
     Route::get('getfriendlistfromuserid', 'DefaultController@getFriendListFromUserId');
@@ -42,12 +41,12 @@ Route::group(['prefix' => 'Speedfreak/Engine'], function() {
     Route::get('sendChatAnnouncement', 'DefaultController@sendChatAnnouncement');
 
     // Authentication
-    Route::post('User/AuthenticateUser', 'UserController@authenticateUser');
-    Route::post('User/CreateUser', 'UserController@createUser');
-    Route::post('User/GetPermanentSession', 'UserController@getPermanentSession');
+    Route::post('user/authenticateUser', 'UserController@authenticateUser');
+    Route::post('user/createUser', 'UserController@createUser');
+    Route::post('user/getPermanentSession', 'UserController@getPermanentSession');
 
     // Personas
-    Route::get('DriverPersona/GetExpLevelPointsMap', 'DriverPersonaController@getExpLevelPointsMap');
+    Route::get('driver_persona/GetExpLevelPointsMap', 'DriverPersonaController@getExpLevelPointsMap');
 
     // Statistics/client ping
     Route::get('Server/Statistics', 'ServerStatsController@statistics');
@@ -55,5 +54,9 @@ Route::group(['prefix' => 'Speedfreak/Engine'], function() {
     Route::get('Server/InfoUI', 'ServerStatsController@infoUI');
 
     // Chat
-    Route::get('Session/GetChatInfo', 'SessionController@getChatInfo');
+    Route::get('session/getChatInfo', 'SessionController@getChatInfo');
+
+    // Crypto
+    Route::get('crypto/cryptoticket', 'CryptoController@cryptoTicket');
+    Route::get('crypto/relaycryptoticket', 'CryptoController@relayCryptoTicket');
 });
