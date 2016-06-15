@@ -11,12 +11,15 @@
 namespace Speedfreak\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Speedfreak\Entities\Traits\IdLookup;
 use Speedfreak\Entities\Types\EngagePointType;
 use Speedfreak\Entities\Types\EventDefinitionType;
 use Speedfreak\Entities\Types\RewardModesType;
 
 class EventDefinition extends Model
 {
+    use IdLookup;
+
     protected $primaryKey = 'eventId';
 
     public function getEventType() : EventDefinitionType
