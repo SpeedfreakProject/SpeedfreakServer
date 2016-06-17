@@ -12,7 +12,8 @@
         "doctrine/annotations": "^1.2",
         "barryvdh/laravel-ide-helper": "^2.1",
         "doctrine/dbal": "~2.3",
-        "mashape/unirest-php": "^3.0"
+        "mashape/unirest-php": "^3.0",
+        "gidkom/php-openfire-restapi": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
