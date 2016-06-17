@@ -30,7 +30,7 @@ class ImportData extends Command
      *
      * @var string
      */
-    protected $signature = 'nfsw:data-import {db=SOAPBOX} {--info}';
+    protected $signature = 'nfsw:data-import {db=SOAPBOX} {--info} {--importer=}';
 
     /**
      * The console command description.
@@ -54,6 +54,23 @@ class ImportData extends Command
         SoapboxEventImporter::class => 'Event Definitions',
         SoapboxBasketImporter::class => 'Basket Definitions',
         SoapboxCategoryImporter::class => 'Shop Categories',
+    ];
+
+    /**
+     * An array of importer classes to use for lookups.
+     *
+     * @var array
+     */
+    protected $classMap = [
+        SoapboxProductImporter::class,
+        SoapboxPersonaImporter::class,
+        SoapboxVinylImporter::class,
+        SoapboxUserImporter::class,
+        SoapboxOwnedCarImporter::class,
+        SoapboxCustomCarImporter::class,
+        SoapboxEventImporter::class,
+        SoapboxBasketImporter::class,
+        SoapboxCategoryImporter::class,
     ];
 
     /**
@@ -99,29 +116,53 @@ class ImportData extends Command
 
             $db = new PDO('mysql:host=localhost;dbname=' . $this->argument('db') . ';charset=utf8mb4', 'root');
 
-            $new = array_filter($this->importers, function($value, $key) use ($db) {
-                return app($key)->hasNewStuff($db);
-            }, ARRAY_FILTER_USE_BOTH);
+            if (!($importer = $this->option('importer'))) {
+                $new = array_filter($this->classMap, function($value) use ($db) {
+                    return app($value)->hasNewStuff($db);
+                });
 
-            if (count($new) == 0) {
-                $this->info('Nothing to import.');
-                return;
-            }
+                if (count($new) == 0) {
+                    $this->info('Nothing to import.');
+                    return;
+                }
 
-            if (count($new) > 0) {
-                $this->warn('Some importers have new data to insert:');
-                foreach($new as $key => $item) {
-                    $this->info('- ' . $key);
+                if (count($new) > 0) {
+                    $this->warn('Some importers have new data to insert:');
+                    foreach($new as $item) {
+                        $this->info('- ' . $item);
+                    }
+                }
+
+                if ($this->confirm('Do you wish to continue?')) {
+                    foreach($new as $type) {
+                        $this->comment('Now importing from ' . class_basename($type));
+                        $time = microtime(true);
+                        app($type)->import($db, $this);
+                        $now = microtime(true);
+                        $this->info('Finished working with ' . class_basename($type) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
+                    }
                 }
             }
+            else {
+                $index = array_search($importer, $this->classMap);
+                if ($index === false) {
+                    $this->warn(sprintf('Importer %s could not be found. Available importers: ', $importer));
+                    foreach($this->importers as $value) {
+                        $this->info('- ' . $value);
+                    }
 
-            if ($this->confirm('Do you wish to continue?')) {
-                foreach($new as $importer => $type) {
-                    $this->comment('Now importing from ' . class_basename($importer));
+                    return;
+                }
+
+                $instance = app($this->importers[$index]);
+                if ($instance->hasNewStuff($db)) {
+                    $this->comment('Importing from ' . $importer);
                     $time = microtime(true);
-                    app($importer)->import($db, $this);
+                    $instance->import($db, $this);
                     $now = microtime(true);
-                    $this->info('Finished working with ' . class_basename($importer) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
+                    $this->info('Finished working with ' . class_basename($this->importers[$index]) . ' in ' . number_format((float)$diff = $now - $time, 2, '.', '') . ' ' . str_plural('second', round($diff, 2)));
+                } else {
+                    $this->line(sprintf('<info>Nothing to import for class</info> <comment>%s</comment>', $importer));
                 }
             }
         }

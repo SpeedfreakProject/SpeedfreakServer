@@ -19,7 +19,7 @@
 |
 */
 Route::get('/', function () {
-    abort(401);
+    throw new \Speedfreak\Contracts\Exceptions\EngineException('There is nothing to see here.');
 });
 
 Route::group(['prefix' => '{speedfreak}/{speedfreak_engine}'], function() {
@@ -34,29 +34,52 @@ Route::group(['prefix' => '{speedfreak}/{speedfreak_engine}'], function() {
     Route::get('getblockeduserlist', 'DefaultController@getBlockedUserList');
     Route::get('getblockersbyusers', 'DefaultController@getBlockersByUsers');
     Route::get('heartbeat', 'DefaultController@heartbeat');
-    Route::get('newsArticles', 'DefaultController@newsArticles');
+    Route::get('newsarticles', 'DefaultController@newsArticles');
     Route::get('getsocialnetworkinfo', 'DefaultController@getSocialNetworkInfo');
     Route::get('setsocialsettings', 'DefaultController@setSocialSettings');
     Route::get('addfriendrequest', 'DefaultController@addFriendRequest');
-    Route::get('sendChatAnnouncement', 'DefaultController@sendChatAnnouncement');
+    Route::get('sendchatannouncement', 'DefaultController@sendChatAnnouncement');
 
     // Authentication
-    Route::post('user/authenticateUser', 'UserController@authenticateUser');
-    Route::post('user/createUser', 'UserController@createUser');
-    Route::post('user/getPermanentSession', 'UserController@getPermanentSession');
+    Route::post('user/authenticateuser', 'UserController@authenticateUser');
+    Route::post('user/createuser', 'UserController@createUser');
+    Route::post('user/getpermanentsession', 'UserController@getPermanentSession');
 
     // Personas
-    Route::get('driver_persona/GetExpLevelPointsMap', 'DriverPersonaController@getExpLevelPointsMap');
+    Route::get('driverpersona/getexplevelpointsmap', 'DriverPersonaController@getExpLevelPointsMap');
+    Route::post('driverpersona/reservename', 'DriverPersonaController@reserveName');
+    Route::post('driverpersona/unreservename', 'DriverPersonaController@unreserveName');
+    Route::post('driverpersona/createpersona', 'DriverPersonaController@createPersona');
+    Route::get('driverpersona/getpersonainfo', 'DriverPersonaController@getPersonaInfo');
+    Route::get('driverpersona/getpersonabasefromlist', 'DriverPersonaController@getPersonaBaseFromList');
+    Route::post('driverpersona/updatepersonapresence', 'DriverPersonaController@updatePersonaPresence');
+    Route::post('driverpersona/deletepersona', 'DriverPersonaController@deletePersona');
+    Route::post('driverpersona/updatestatusmessage', 'DriverPersonaController@updateStatusMessage');
+    Route::get('driverpersona/getpersonapresencebyname', 'DriverPersonaController@getPersonaPresenceByName');
 
     // Statistics/client ping
-    Route::get('Server/Statistics', 'ServerStatsController@statistics');
-    Route::get('Server/Info', 'ServerStatsController@info');
-    Route::get('Server/InfoUI', 'ServerStatsController@infoUI');
+    Route::get('server/statistics', 'ServerStatsController@statistics');
+    Route::get('server/info', 'ServerStatsController@info');
+    Route::get('server/infoui', 'ServerStatsController@infoUI');
 
     // Chat
-    Route::get('session/getChatInfo', 'SessionController@getChatInfo');
+    Route::get('session/getchatinfo', 'SessionController@getChatInfo');
+
+    // Leaderboard
+    Route::get('leaderboard', 'LeaderboardController@index');
 
     // Crypto
     Route::get('crypto/cryptoticket', 'CryptoController@cryptoTicket');
     Route::get('crypto/relaycryptoticket', 'CryptoController@relayCryptoTicket');
+
+    // Reporting
+    Route::get('reporting/sendmultiplayerconnect', 'ReportingController@sendMultiplayerConnect');
+    Route::get('reporting/sendhardwareinfo', 'ReportingController@sendHardwareInfo');
+    Route::get('reporting/sendusersettings', 'ReportingController@sendUserSettings');
+    Route::get('reporting/sendclientpingtime', 'ReportingController@sendClientPingTime');
+
+    // SpeedAPI
+    Route::get('speedfreakapi/getpersonadata', 'SpeedfreakAPIController@getPersonaData');
+    Route::get('speedfreakapi/getproductdata', 'SpeedfreakAPIController@getProductData');
+    Route::get('speedfreakapi/getuserdata', 'SpeedfreakAPIController@getUserData');
 });

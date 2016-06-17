@@ -13,22 +13,6 @@ namespace Speedfreak;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Speedfreak\Entities\Persona;
 
-/**
- * Speedfreak\User
- *
- * @property integer $id
- * @property string $email
- * @property string $password
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\Speedfreak\Entities\Persona[] $personas
- * @method static \Illuminate\Database\Query\Builder|\Speedfreak\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Speedfreak\User whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Speedfreak\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\Speedfreak\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Speedfreak\User whereUpdatedAt($value)
- * @mixin \Eloquent
- */
 class User extends Authenticatable
 {
     /**
@@ -67,5 +51,12 @@ class User extends Authenticatable
     public static function findByIdOrFail(int $id) : User
     {
         return self::query()->findOrFail($id);
+    }
+
+    public function getPersonaTypes() : array
+    {
+        return collect($this->personas)->map(function(Persona $persona) {
+            return $persona->getPersonaType();
+        })->values()->all();
     }
 }

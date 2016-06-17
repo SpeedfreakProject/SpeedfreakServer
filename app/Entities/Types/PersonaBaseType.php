@@ -16,7 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Class PersonaBaseType
  * @package Speedfreak\Entities\Types
  *
- * @Serializer\AccessorOrder("custom",custom={"badges", "iconIndex", "level", "motto", "name", "personaId", "presence", "score", "userId"})
+ * @Serializer\AccessorOrder("custom",custom={"id", "badges", "iconIndex", "level", "motto", "name", "personaId", "presence", "score", "userId"})
  */
 class PersonaBaseType
 {
@@ -282,5 +282,15 @@ class PersonaBaseType
     public function setRep($rep)
     {
         $this->rep = $rep;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("Id")
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->personaId;
     }
 }

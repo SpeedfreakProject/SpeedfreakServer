@@ -93,6 +93,21 @@ class Handler extends ExceptionHandler
                 422,
                 ['Content-Type' => 'application/xml']
             );
+        } elseif ($e instanceof ModelNotFoundException) {
+            $xml = new SimpleXMLElement(Constants::XML_TEMPLATE_STRING . '<ModelNotFoundExceptionTrans></ModelNotFoundExceptionTrans>');
+            $xml->addChild('Description', '');
+            $xml->addChild('ErrorCode', '3');
+            $xml->addChild('InnerException', '');
+            $xml->addChild('Message', $e->getMessage());
+            $xml->addChild('StackTrace', '');
+            $details = $xml->addChild('Details');
+            $details->addChild('ModelClass', $e->getModel());
+
+            return response(
+                $xml->asXML(),
+                422,
+                ['Content-Type' => 'application/xml']
+            );
         }
 
         return parent::render($request, $e);

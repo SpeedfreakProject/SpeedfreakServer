@@ -10,35 +10,30 @@
 namespace Speedfreak\Entities\Types;
 
 use JMS\Serializer\Annotation as Serializer;
+use Speedfreak\Entities\EventDefinition;
 
-/**
- * Class ArrayOfOwnedCarTrans
- * @package Speedfreak\Entities\Types
- * @Serializer\XmlRoot(name="ArrayOfOwnedCarTrans")
- */
-class ArrayOfOwnedCarTrans
+class EventsType
 {
     /**
-     * @var array
-     * @Serializer\Type("array<Speedfreak\Entities\OwnedCar>")
+     * @var EventDefinition[]
      * @Serializer\XmlElement(cdata=false)
-     * @Serializer\XmlList(entry="OwnedCarTrans",inline=true)
+     * @Serializer\XmlList(inline=true,entry="EventDefinition")
      */
-    protected $ownedCarTrans = [];
+    protected $events = [];
 
     /**
-     * @return array
+     * @return \Speedfreak\Entities\EventDefinition[]
      */
-    public function getOwnedCarTrans()
+    public function getEvents()
     {
-        return $this->ownedCarTrans;
+        return $this->events;
     }
 
     /**
-     * @param array $ownedCarTrans
+     * @param \Speedfreak\Entities\EventDefinition[] $events
      */
-    public function setOwnedCarTrans($ownedCarTrans)
+    public function setEvents($events)
     {
-        $this->ownedCarTrans = $ownedCarTrans;
+        $this->events = $events;
     }
 }

@@ -43,7 +43,7 @@ class Persona extends Model implements IValidationEntity
      */
     public function ownedCars()
     {
-        return $this->hasMany(OwnedCar::class);
+        return $this->hasMany(OwnedCar::class, 'personaId');
     }
 
     /**

@@ -7,20 +7,8 @@
  * Copyright (c) 2016 CoderLeo / Speedfreak
  */
 
-namespace Speedfreak\Entities\Leaderboards;
+namespace Speedfreak\Entities\API;
 
-use Speedfreak\Entities\Persona;
-
-class LeaderboardManager
+class APIVinylProductDataType
 {
-    /**
-     * Get the top-five drivers.
-     *
-     * @param int $items
-     * @return LeaderboardCollection
-     */
-    public function getTopFive(int $items = 5) : LeaderboardCollection
-    {
-        return new LeaderboardCollection(Persona::all()->take($items));
-    }
 }

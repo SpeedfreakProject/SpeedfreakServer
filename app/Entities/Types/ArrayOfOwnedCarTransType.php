@@ -10,35 +10,35 @@
 namespace Speedfreak\Entities\Types;
 
 use JMS\Serializer\Annotation as Serializer;
-use Speedfreak\Entities\Persona;
 
 /**
- * Class LeaderboardType
+ * Class ArrayOfOwnedCarTrans
  * @package Speedfreak\Entities\Types
- * @Serializer\XmlRoot(name="Leaderboard")
+ * @Serializer\XmlRoot(name="ArrayOfOwnedCarTransType")
  */
-class LeaderboardType
+class ArrayOfOwnedCarTransType
 {
     /**
-     * @var Persona[]
-     * @Serializer\Type("array<Speedfreak\Entities\Types\PersonaBaseType>")
-     * @Serializer\XmlList(entry="Persona", inline=true)
+     * @var array
+     * @Serializer\Type("array<Speedfreak\Entities\Types\OwnedCarType>")
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\XmlList(entry="OwnedCarTrans",inline=true)
      */
-    protected $leaderboard;
+    protected $ownedCarTransList = [];
 
     /**
-     * @return \Speedfreak\Entities\Persona[]
+     * @return array
      */
-    public function getLeaderboard()
+    public function getOwnedCarTransList()
     {
-        return $this->leaderboard;
+        return $this->ownedCarTransList;
     }
 
     /**
-     * @param \Speedfreak\Entities\Persona[] $leaderboard
+     * @param array $ownedCarTransList
      */
-    public function setLeaderboard($leaderboard)
+    public function setOwnedCarTransList($ownedCarTransList)
     {
-        $this->leaderboard = $leaderboard;
+        $this->ownedCarTransList = $ownedCarTransList;
     }
 }

@@ -8,5 +8,8 @@ use Speedfreak\Http\Requests;
 
 class LoggingController extends Controller
 {
-    //
+    public function client()
+    {
+        return '<ClientConfigTrans/>';
+    }
 }

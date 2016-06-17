@@ -42,15 +42,13 @@ class UserRepository implements Contract
 
     public function deleteUser(int $userId)
     {
-        User::query()
-            ->findOrFail($userId)
+        User::findByIdOrFail($userId)
             ->delete();
     }
 
-    public function findById(int $userId)
+    public function findById(int $userId) : User
     {
-        return User::query()
-            ->findOrFail($userId);
+        return User::findByIdOrFail($userId);
     }
 
     public function authenticate(string $email, string $password)

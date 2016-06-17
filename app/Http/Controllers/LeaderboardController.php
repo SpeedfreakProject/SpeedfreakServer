@@ -20,9 +20,9 @@ class LeaderboardController extends NFSWController
      */
     public function index(LeaderboardManager $leaderboard)
     {
-        $value = new LeaderboardType();
-        $value->setLeaderboard($leaderboard->getTopFive()->all());
+        $value = new LeaderboardType;
+        $value->setLeaderboard($leaderboard->getTopFive($this->getParam('items', 5))->all());
 
-        return $this->sendXml(Marshaller::marshal($value));
+        return Marshaller::marshal($value, LeaderboardType::class);
     }
 }

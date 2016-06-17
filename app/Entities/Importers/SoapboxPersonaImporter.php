@@ -41,6 +41,7 @@ class SoapboxPersonaImporter implements IEntityImporter
 
         foreach($results as $i => $row) {
             Persona::forceCreate([
+                'id' => $row['ID'],
                 'cash' => $row['CASH'],
                 'curCarIndex' => $row['CURCARINDEX'],
                 'iconIndex' => $row['ICONINDEX'],

@@ -9,6 +9,35 @@
 
 namespace Speedfreak\Entities\Types;
 
+use JMS\Serializer\Annotation as Serializer;
+
+/**
+ * Class EventsPacketType
+ * @package Speedfreak\Entities\Types
+ * @Serializer\XmlRoot(name="EventsPacket")
+ */
 class EventsPacketType
 {
+    /**
+     * @var EventsType
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\SerializedName("Events")
+     */
+    protected $events;
+
+    /**
+     * @return EventsType
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param EventsType $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
+    }
 }

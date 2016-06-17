@@ -16,7 +16,7 @@ use Speedfreak\Entities\Repositories\PersonaRepository;
 use Speedfreak\Entities\Repositories\ProductRepository;
 
 use Speedfreak\Contracts\Business\PersonaBO as Contract;
-use Speedfreak\Entities\Types\ArrayOfOwnedCarTrans;
+use Speedfreak\Entities\Types\ArrayOfOwnedCarTransType;
 use Speedfreak\Entities\Types\CarSlotInfoTrans;
 use Speedfreak\Entities\Types\CarsOwnedByPersonaList;
 use Speedfreak\Entities\Types\CommerceSessionResultTransType;
@@ -132,11 +132,11 @@ class PersonaBO implements Contract
         ])->save();
     }
 
-    public function getCars(int $personaId) : ArrayOfOwnedCarTrans
+    public function getCars(int $personaId) : ArrayOfOwnedCarTransType
     {
-        $arrayOfOwnedCarTrans = new ArrayOfOwnedCarTrans;
+        $arrayOfOwnedCarTrans = new ArrayOfOwnedCarTransType;
         $persona = $this->personaRepository->findById($personaId);
-        $arrayOfOwnedCarTrans->setOwnedCarTrans($persona->ownedCars->all());
+        $arrayOfOwnedCarTrans->setOwnedCarTransList($persona->ownedCars->all());
 
         return $arrayOfOwnedCarTrans;
     }

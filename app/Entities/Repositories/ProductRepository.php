@@ -16,9 +16,9 @@ use Speedfreak\Entities\Product;
 
 class ProductRepository implements Contract
 {
-    public function findById(int $id)
+    public function findById(int $id) : Product
     {
-        return Product::findById($id);
+        return Product::findByIdOrFail($id);
     }
 
     public function findByProductId(string $productId)

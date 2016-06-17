@@ -8,5 +8,11 @@ use Speedfreak\Http\Requests;
 
 class PowerupsController extends Controller
 {
-    //
+    /**
+     * Handle a powerup being activated.
+     */
+    public function activated()
+    {
+        return '';
+    }
 }

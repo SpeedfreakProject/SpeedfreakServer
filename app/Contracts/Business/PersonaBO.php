@@ -10,7 +10,7 @@
 namespace Speedfreak\Contracts\Business;
 
 use Speedfreak\Entities\OwnedCar;
-use Speedfreak\Entities\Types\ArrayOfOwnedCarTrans;
+use Speedfreak\Entities\Types\ArrayOfOwnedCarTransType;
 use Speedfreak\Entities\Types\CarSlotInfoTrans;
 use Speedfreak\Entities\Types\CommerceSessionResultTransType;
 use Speedfreak\Entities\Types\UpdatedCarType;
@@ -27,7 +27,7 @@ interface PersonaBO
 
     public function changeDefaultCar(int $personaId, int $defaultCarId);
 
-    public function getCars(int $personaId) : ArrayOfOwnedCarTrans;
+    public function getCars(int $personaId) : ArrayOfOwnedCarTransType;
 
     public function sellCar(int $personaId, int $carId);
 }

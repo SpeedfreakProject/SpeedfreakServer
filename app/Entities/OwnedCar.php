@@ -12,12 +12,15 @@ namespace Speedfreak\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Speedfreak\Entities\Traits\IdLookup;
+use Speedfreak\Entities\Types\OwnedCarType;
 
 class OwnedCar extends Model
 {
     use IdLookup;
 
     protected $primaryKey = 'uniqueCarId';
+
+    protected $dates = ['expirationDate'];
 
     /**
      * A persona owns a car.
@@ -37,5 +40,22 @@ class OwnedCar extends Model
     public function customCar()
     {
         return $this->hasMany(CustomCar::class, 'idParentOwnedCarTrans');
+    }
+
+    public function getOwnedCarType() : OwnedCarType
+    {
+        $customTypes = collect($this->customCar)->map(function(CustomCar $customCar) {
+            return $customCar->getCustomCarType();
+        })->all();
+
+        $type = new OwnedCarType;
+        $type->setDurability($this->durability);
+        $type->setExpirationDate($this->expirationDate ? $this->expirationDate->toDateTimeString() : null);
+        $type->setHeat($this->heatLevel);
+        $type->setOwnershipType($this->ownershipType);
+        $type->setUniqueCarId($this->getKey());
+        $type->setCustomCars($customTypes);
+
+        return $type;
     }
 }

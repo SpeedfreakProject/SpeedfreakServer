@@ -193,14 +193,14 @@ class DriverPersonaController extends NFSWController
 
     public function updatePersonaPresence()
     {
-        return $this->sendXml('');
+        return '';
     }
 
     public function deletePersona()
     {
         $personaId = $this->getPersonaId();
         $this->driverPersonaBO->deletePersona($personaId);
-        return $this->sendXml('<long>0</long>');
+        return '<long>0</long>';
     }
 
     public function updateStatusMessage()
@@ -211,20 +211,21 @@ class DriverPersonaController extends NFSWController
         $message = $personaMottoType->getMessage();
         $personaId = $personaMottoType->getPersonaId();
 
-        return $this->sendXml(Marshaller::marshal(
+        return Marshaller::marshal(
             $this->driverPersonaBO->updateStatusMessage($personaId, $message),
             PersonaMottoType::class
-        ));
+        );
     }
 
     public function getPersonaPresenceByName()
     {
         $presence = $this->driverPersonaBO->getPersonaPresenceByName($this->getParam('displayName'));
         if ($presence) {
-            return $this->sendXml(Marshaller::marshal(
+            return Marshaller::marshal(
                 $presence, PersonaPresenceType::class
-            ));
+            );
         }
-        return $this->sendXml('');
+
+        return '';
     }
 }

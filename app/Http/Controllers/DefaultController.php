@@ -29,7 +29,8 @@ class DefaultController extends NFSWController
 {
     public function systemInfo()
     {
-        $info = (new SystemInfoType)->setBranch('debug')
+        $info = new SystemInfoType;
+        $info->setBranch('debug')
             ->setChangeList(620386)
             ->setClientVersion(638)
             ->setClientVersionCheck(true)
@@ -49,7 +50,7 @@ class DefaultController extends NFSWController
             ->setTime(Carbon::now()->toIso8601String())
             ->setVersion(1600);
 
-        return $this->sendXml(Marshaller::marshal($info, SystemInfoType::class));
+        return Marshaller::marshal($info, SystemInfoType::class);
     }
 
     public function getFriendListFromUserId()
@@ -71,10 +72,11 @@ class DefaultController extends NFSWController
             new CarClassType(872416321, 249, 0),
             new CarClassType(1866825865, 499, 400),
         ];
+
         $arrayOfCarClass = new ArrayOfCarClassType;
         $arrayOfCarClass->setArrayOfCarClasses($classes);
 
-        return $this->sendXml(Marshaller::marshal($arrayOfCarClass, ArrayOfCarClassType::class));
+        return Marshaller::marshal($arrayOfCarClass, ArrayOfCarClassType::class);
     }
 
     public function getReBroadcasters()
@@ -84,28 +86,28 @@ class DefaultController extends NFSWController
             new UdpRelayInfoType('127.0.0.1', 9999)
         ]);
 
-        return $this->sendXml(Marshaller::marshal(
+        return Marshaller::marshal(
             $arrayOfUdpRelayInfo, ArrayOfUdpRelayInfoType::class
-        ));
+        );
     }
 
     public function getRegionInfo()
     {
-        return $this->sendXml(Marshaller::marshal(
+        return Marshaller::marshal(
             new RegionInfoType, RegionInfoType::class
-        ));
+        );
     }
 
     public function loginAnnouncements()
     {
-        return $this->sendXml('<LoginAnnouncementsDefinition/>');
+        return '<LoginAnnouncementsDefinition/>';
     }
 
     public function getSocialSettings()
     {
-        return $this->sendXml(Marshaller::marshal(
+        return Marshaller::marshal(
             new SocialSettingsType, SocialSettingsType::class
-        ));
+        );
     }
 
     public function getUserSettings()
@@ -131,34 +133,32 @@ class DefaultController extends NFSWController
         $xml->addChild('starterPackApplied', false);
         $xml->addChild('userId', 1);
 
-        return response($xml->asXML(), 200, [
-            'Content-Type' => 'application/xml'
-        ]);
+        return $xml->asXML();
     }
 
     public function getBlockedUserList()
     {
-        return $this->sendXml('<ArrayOflong/>');
+        return '<ArrayOflong/>';
     }
 
     public function getBlockersByUsers()
     {
-        return $this->sendXml('<ArrayOflong/>');
+        return '<ArrayOflong/>';
     }
 
     public function heartbeat()
     {
-        return $this->sendXml('');
+        return '';
     }
 
     public function newsArticles()
     {
-        return $this->sendXml('<ArrayOfNewsArticleTrans />');
+        return '<ArrayOfNewsArticleTrans />';
     }
 
     public function getSocialNetworkInfo()
     {
-        return $this->sendXml('<SocialNetworkInfo />');
+        return '<SocialNetworkInfo />';
     }
 
     public function setSocialSettings()

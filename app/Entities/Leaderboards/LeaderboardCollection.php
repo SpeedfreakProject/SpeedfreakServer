@@ -11,6 +11,7 @@ namespace Speedfreak\Entities\Leaderboards;
 
 use Illuminate\Support\Collection;
 use Speedfreak\Entities\Persona;
+use Speedfreak\Entities\Types\PersonaBaseType;
 
 class LeaderboardCollection extends Collection
 {
@@ -23,8 +24,11 @@ class LeaderboardCollection extends Collection
     public function all()
     {
         return collect($this->items)
-            ->sortByDesc(function(Persona $persona) {
-                return $persona->level;
+            ->map(function(Persona $persona) {
+                return $persona->getPersonaType();
+            })
+            ->sortByDesc(function(PersonaBaseType $persona) {
+                return $persona->getLevel();
             })->values()->all();
     }
 }
