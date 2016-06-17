@@ -22,40 +22,44 @@ Route::get('/', function () {
     throw new \Speedfreak\Contracts\Exceptions\EngineException('There is nothing to see here.');
 });
 
-Route::group(['prefix' => '{speedfreak}/{speedfreak_engine}'], function() {
+Route::group(['prefix' => 'speedfreak/Engine.svc'], function() {
+    Route::match(['GET', 'POST', 'PUT', 'PATCH', 'UPDATE'], '/', function() {
+        throw new \Speedfreak\Contracts\Exceptions\EngineException("Nothing to see here.");
+    });
+
     Route::get('getusersettings', 'DefaultController@getUserSettings');
     Route::get('systeminfo', 'DefaultController@systemInfo');
     Route::get('getfriendlistfromuserid', 'DefaultController@getFriendListFromUserId');
     Route::get('carclasses', 'DefaultController@carClasses');
     Route::get('getrebroadcasters', 'DefaultController@getReBroadcasters');
     Route::get('getregioninfo', 'DefaultController@getRegionInfo');
-    Route::get('loginAnnouncements', 'DefaultController@loginAnnouncements');
+    Route::get('LoginAnnouncements', 'DefaultController@loginAnnouncements');
     Route::get('getsocialsettings', 'DefaultController@getSocialSettings');
     Route::get('getblockeduserlist', 'DefaultController@getBlockedUserList');
     Route::get('getblockersbyusers', 'DefaultController@getBlockersByUsers');
     Route::get('heartbeat', 'DefaultController@heartbeat');
-    Route::get('newsarticles', 'DefaultController@newsArticles');
+    Route::get('NewsArticles', 'DefaultController@newsArticles');
     Route::get('getsocialnetworkinfo', 'DefaultController@getSocialNetworkInfo');
     Route::get('setsocialsettings', 'DefaultController@setSocialSettings');
     Route::get('addfriendrequest', 'DefaultController@addFriendRequest');
     Route::get('sendchatannouncement', 'DefaultController@sendChatAnnouncement');
 
     // Authentication
-    Route::post('user/authenticateuser', 'UserController@authenticateUser');
-    Route::post('user/createuser', 'UserController@createUser');
-    Route::post('user/getpermanentsession', 'UserController@getPermanentSession');
+    Route::post('User/AuthenticateUser', 'UserController@authenticateUser');
+    Route::post('User/CreateUser', 'UserController@createUser');
+    Route::post('User/GetPermanentSession', 'UserController@getPermanentSession');
 
     // Personas
-    Route::get('driverpersona/getexplevelpointsmap', 'DriverPersonaController@getExpLevelPointsMap');
-    Route::post('driverpersona/reservename', 'DriverPersonaController@reserveName');
-    Route::post('driverpersona/unreservename', 'DriverPersonaController@unreserveName');
-    Route::post('driverpersona/createpersona', 'DriverPersonaController@createPersona');
-    Route::get('driverpersona/getpersonainfo', 'DriverPersonaController@getPersonaInfo');
-    Route::get('driverpersona/getpersonabasefromlist', 'DriverPersonaController@getPersonaBaseFromList');
-    Route::post('driverpersona/updatepersonapresence', 'DriverPersonaController@updatePersonaPresence');
-    Route::post('driverpersona/deletepersona', 'DriverPersonaController@deletePersona');
-    Route::post('driverpersona/updatestatusmessage', 'DriverPersonaController@updateStatusMessage');
-    Route::get('driverpersona/getpersonapresencebyname', 'DriverPersonaController@getPersonaPresenceByName');
+    Route::get('DriverPersona/GetExpLevelPointsMap', 'DriverPersonaController@getExpLevelPointsMap');
+    Route::post('DriverPersona/ReserveName', 'DriverPersonaController@reserveName');
+    Route::post('DriverPersona/UnreserveName', 'DriverPersonaController@unreserveName');
+    Route::post('DriverPersona/CreatePersona', 'DriverPersonaController@createPersona');
+    Route::get('DriverPersona/GetPersonaInfo', 'DriverPersonaController@getPersonaInfo');
+    Route::get('DriverPersona/GetPersonaBaseFromList', 'DriverPersonaController@getPersonaBaseFromList');
+    Route::post('DriverPersona/UpdatePersonaPresence', 'DriverPersonaController@updatePersonaPresence');
+    Route::post('DriverPersona/DeletePersona', 'DriverPersonaController@deletePersona');
+    Route::post('DriverPersona/UpdateStatusMessage', 'DriverPersonaController@updateStatusMessage');
+    Route::get('DriverPersona/GetPersonaPresenceByName', 'DriverPersonaController@getPersonaPresenceByName');
 
     // Statistics/client ping
     Route::get('server/statistics', 'ServerStatsController@statistics');
@@ -63,20 +67,20 @@ Route::group(['prefix' => '{speedfreak}/{speedfreak_engine}'], function() {
     Route::get('server/infoui', 'ServerStatsController@infoUI');
 
     // Chat
-    Route::get('session/getchatinfo', 'SessionController@getChatInfo');
+    Route::get('Session/GetChatInfo', 'SessionController@getChatInfo');
 
     // Leaderboard
     Route::get('leaderboard', 'LeaderboardController@index');
 
     // Crypto
     Route::get('crypto/cryptoticket', 'CryptoController@cryptoTicket');
-    Route::get('crypto/relaycryptoticket', 'CryptoController@relayCryptoTicket');
+    Route::get('crypto/relaycryptoticket/{personaId}', 'CryptoController@relayCryptoTicket');
 
     // Reporting
-    Route::get('reporting/sendmultiplayerconnect', 'ReportingController@sendMultiplayerConnect');
-    Route::get('reporting/sendhardwareinfo', 'ReportingController@sendHardwareInfo');
-    Route::get('reporting/sendusersettings', 'ReportingController@sendUserSettings');
-    Route::get('reporting/sendclientpingtime', 'ReportingController@sendClientPingTime');
+    Route::get('Reporting/SendMultiplayerConnect', 'ReportingController@sendMultiplayerConnect');
+    Route::get('Reporting/SendHardwareInfo', 'ReportingController@sendHardwareInfo');
+    Route::get('Reporting/SendUserSettings', 'ReportingController@sendUserSettings');
+    Route::get('Reporting/SendClientPingTime', 'ReportingController@sendClientPingTime');
 
     // SpeedAPI
     Route::get('speedfreakapi/getpersonadata', 'SpeedfreakAPIController@getPersonaData');

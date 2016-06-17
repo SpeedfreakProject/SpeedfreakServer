@@ -26,7 +26,6 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        LowercaseRoutes::class,
         EnableAnnotationLoading::class,
         AutoXML::class,
     ];
