@@ -11,6 +11,7 @@ namespace Speedfreak\Entities\API;
 
 use JMS\Serializer\Annotation as Serializer;
 use Speedfreak\Entities\Types\ArrayOfOwnedCarTransType;
+use Speedfreak\Entities\Types\ArrayOfPersonaIdsType;
 
 /**
  * Class APIPersonaDataType
@@ -72,8 +73,7 @@ class APIPersonaDataType
     /**
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("OtherPersonas")
-     * @Serializer\XmlList(entry="personaId")
-     * @var int[]
+     * @var ArrayOfPersonaIdsType
      */
     protected $otherPersonas = [];
 
@@ -190,17 +190,17 @@ class APIPersonaDataType
     }
 
     /**
-     * @return \int[]
+     * @return ArrayOfPersonaIdsType
      */
-    public function getOtherPersonas()
+    public function getOtherPersonas() : ArrayOfPersonaIdsType
     {
         return $this->otherPersonas;
     }
 
     /**
-     * @param \int[] $otherPersonas
+     * @param ArrayOfPersonaIdsType $otherPersonas
      */
-    public function setOtherPersonas($otherPersonas)
+    public function setOtherPersonas(ArrayOfPersonaIdsType $otherPersonas)
     {
         $this->otherPersonas = $otherPersonas;
     }

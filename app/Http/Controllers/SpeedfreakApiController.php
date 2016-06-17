@@ -13,6 +13,7 @@ use Speedfreak\Entities\Repositories\ProductRepository;
 use Speedfreak\Entities\Repositories\UserRepository;
 use Speedfreak\Entities\Types\ArrayOfOwnedCarTransType;
 use Speedfreak\Entities\Types\ArrayOfPersonaBaseType;
+use Speedfreak\Entities\Types\ArrayOfPersonaIdsType;
 use Speedfreak\Entities\Utilities\Marshaller;
 use Speedfreak\Http\Requests;
 
@@ -59,9 +60,9 @@ class SpeedfreakAPIController extends Controller
         $cars = new ArrayOfOwnedCarTransType;
         $cars->setOwnedCarTransList($types);
 
-        $otherPersonas = null;
+        $otherPersonas = new ArrayOfPersonaIdsType([]);
         if (count($persona->user->personas) > 1) {
-            $otherPersonas = collect($persona->user->personas)->pluck('id');
+            $otherPersonas = new ArrayOfPersonaIdsType(collect($persona->user->personas)->pluck('id')->all());
         }
 
         $apiPersonaData = new APIPersonaDataType;
