@@ -19,9 +19,8 @@ class Marshaller
      */
     public static function marshal($object, string $reqClass = '', string $format = 'xml') : string
     {
-        if (!is_object($object)) throw new InvalidArgumentException("What? That's not an object.");
-        if ($object instanceof Model || $object instanceof Collection) throw new InvalidArgumentException("Can not marshal models or model collections, they should have a wrapper class");
-        if ($reqClass != '' && ($reqClass != get_class($object))) throw new InvalidArgumentException("Expected an object of type " . $reqClass . ', got ' . get_class($object));
+        if (is_object($object) && ($object instanceof Model || $object instanceof Collection)) throw new InvalidArgumentException("Can not marshal models or model collections, they should have a wrapper class");
+        if (is_object($object) && ($reqClass != '' && ($reqClass != get_class($object)))) throw new InvalidArgumentException("Expected an object of type " . $reqClass . ', got ' . get_class($object));
 
         $serializer = SerializerBuilder::create()->build();
 

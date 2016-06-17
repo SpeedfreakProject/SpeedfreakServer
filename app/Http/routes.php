@@ -84,7 +84,7 @@ Route::group(['prefix' => 'speedfreak/Engine.svc'], function() {
     Route::get('Reporting/SendClientPingTime', 'ReportingController@sendClientPingTime');
 
     // SpeedAPI
-    Route::get('speedfreakapi/getpersonadata', 'SpeedfreakAPIController@getPersonaData');
-    Route::get('speedfreakapi/getproductdata', 'SpeedfreakAPIController@getProductData');
-    Route::get('speedfreakapi/getuserdata', 'SpeedfreakAPIController@getUserData');
+    Route::get('SpeedfreakAPI/getPersonaData', 'SpeedfreakAPIController@getPersonaData');
+    Route::get('SpeedfreakAPI/getProductData', 'SpeedfreakAPIController@getProductData');
+    Route::get('SpeedfreakAPI/getUserData', 'SpeedfreakAPIController@getUserData');
 });
