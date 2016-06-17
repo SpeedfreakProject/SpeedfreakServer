@@ -26,6 +26,15 @@ class ArrayOfCarClassType
     protected $arrayOfCarClasses = [];
 
     /**
+     * ArrayOfCarClassType constructor.
+     * @param array $arrayOfCarClasses
+     */
+    public function __construct(array $arrayOfCarClasses = [])
+    {
+        $this->arrayOfCarClasses = $arrayOfCarClasses;
+    }
+
+    /**
      * @return array
      */
     public function getArrayOfCarClasses()

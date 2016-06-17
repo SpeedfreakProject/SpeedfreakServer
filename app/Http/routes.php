@@ -34,6 +34,7 @@ Route::group(['prefix' => 'speedfreak/Engine.svc'], function() {
     Route::get('getrebroadcasters', 'DefaultController@getReBroadcasters');
     Route::get('getregioninfo', 'DefaultController@getRegionInfo');
     Route::get('LoginAnnouncements', 'DefaultController@loginAnnouncements');
+    Route::get('LoginAnnouncements/ImagesPath', 'DefaultController@announcementImagesPath');
     Route::get('getsocialsettings', 'DefaultController@getSocialSettings');
     Route::get('getblockeduserlist', 'DefaultController@getBlockedUserList');
     Route::get('getblockersbyusers', 'DefaultController@getBlockersByUsers');
