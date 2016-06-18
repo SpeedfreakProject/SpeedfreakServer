@@ -60,29 +60,6 @@ class FriendsManager implements IFriendsManager
     }
 
     /**
-     * Get users that have some of the same friends as the given user.
-     *
-     * @param int $userId
-     * @return MutualFriendsType
-     */
-    public function getMutualFriends(int $userId) : MutualFriendsType
-    {
-        $origin = User::findByIdOrFail($userId);
-        $friends = $origin->getFriends();
-        $result = User::all()->reject(function(User $user) use ($userId) {
-            return $user->getKey() == $userId;
-        })->filter(function(User $user) use ($friends) {
-            return $user->getFriends()->contains(function($key, Friendship $friendship) use ($friends) {
-                return $friends->pluck('id')->contains($friendship->getKey());
-            });
-        })->map(function(User $user) {
-            return $user->getPersonaTypes();
-        });
-
-        return new MutualFriendsType($result->all());
-    }
-
-    /**
      * Add a persona as a friend.
      *
      * @param int $personaId

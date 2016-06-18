@@ -206,17 +206,6 @@ class DefaultController extends NFSWController
         return '<Status>success</Status>';
     }
 
-    public function getMutualFriends(Request $request, FriendsManager $friendsManager)
-    {
-        $this->validate($request, [
-            'userId' => 'required|integer'
-        ]);
-
-        return Marshaller::marshal($friendsManager->getMutualFriends(
-            $request->input('userId')
-        ));
-    }
-
     public function befriend(Request $request, FriendsManager $friendsManager)
     {
         $this->validate($request, [

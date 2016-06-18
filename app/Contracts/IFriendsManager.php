@@ -24,14 +24,6 @@ interface IFriendsManager
     public function isFriend(int $personaId, int $userId) : bool;
 
     /**
-     * Get users that have some of the same friends as the given user.
-     *
-     * @param int $userId
-     * @return MutualFriendsType
-     */
-    public function getMutualFriends(int $userId) : MutualFriendsType;
-
-    /**
      * Add a persona as a friend.
      *
      * @param int $personaId

@@ -38,7 +38,6 @@ Route::group(['prefix' => 'speedfreak/Engine.svc'], function() {
     Route::get('getsocialsettings', 'DefaultController@getSocialSettings');
     Route::get('getblockeduserlist', 'DefaultController@getBlockedUserList');
     Route::get('getblockersbyusers', 'DefaultController@getBlockersByUsers');
-    Route::get('getmutualfriends', 'DefaultController@getMutualFriends');
     Route::get('befriend', 'DefaultController@befriend');
     Route::get('removeFriend', 'DefaultController@removeFriend');
     Route::get('heartbeat', 'DefaultController@heartbeat');
