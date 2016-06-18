@@ -11,6 +11,7 @@
 namespace Speedfreak\Entities\Types;
 
 use JMS\Serializer\Annotation as Serializer;
+use Speedfreak\Entities\Social\FriendPersonaType;
 
 /**
  * Class PersonaBaseType
@@ -292,5 +293,19 @@ class PersonaBaseType
     public function getId()
     {
         return $this->personaId;
+    }
+
+    public function getFriendPersona() : FriendPersonaType
+    {
+        return new FriendPersonaType(
+            $this->iconIndex,
+            $this->level,
+            $this->name,
+            $this->name,
+            $this->personaId,
+            0,
+            'facebook',
+            $this->userId
+        );
     }
 }

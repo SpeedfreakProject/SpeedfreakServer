@@ -8,5 +8,8 @@ use Speedfreak\Http\Requests;
 
 class AchievementsController extends Controller
 {
-    //
+    public function loadAll()
+    {
+        return '<AchievementsPacket />';
+    }
 }

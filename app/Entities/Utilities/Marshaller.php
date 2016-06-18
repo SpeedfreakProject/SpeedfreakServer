@@ -12,7 +12,7 @@ class Marshaller
     /**
      * Convert an object to XML.
      *
-     * @param object $object
+     * @param mixed $object
      * @param string $reqClass
      * @param string $format
      * @return string

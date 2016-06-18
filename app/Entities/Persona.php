@@ -12,6 +12,7 @@ namespace Speedfreak\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use JMS\Serializer\Annotation as Serializer;
+use Speedfreak\Entities\Social\FriendPersonaType;
 use Speedfreak\Entities\Traits\IdLookup;
 use Speedfreak\Entities\Types\PersonaBaseType;
 use Speedfreak\Traits\ValidationEntity;
@@ -78,10 +79,24 @@ class Persona extends Model implements IValidationEntity
         $type->setName($this->name);
         $type->setPresence(1);
         $type->setScore($this->score);
-        $type->setUserId($this->user_id);
+        $type->setUserId($this->userId);
         $type->setRep($this->getRep());
         $type->setRepAtCurrentLevel($this->getRepAtCurrentLevel());
 
         return $type;
+    }
+
+    public function getFriendPersona() : FriendPersonaType
+    {
+        return new FriendPersonaType(
+            $this->iconIndex,
+            $this->level,
+            $this->name,
+            $this->name,
+            $this->getKey(),
+            0,
+            'facebook',
+            $this->userId
+        );
     }
 }

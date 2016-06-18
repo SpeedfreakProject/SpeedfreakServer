@@ -17,6 +17,7 @@ use Speedfreak\Contracts\Exceptions\EngineException;
 use Speedfreak\Contracts\State;
 use Speedfreak\Entities\Repositories\UserRepository;
 use Speedfreak\Entities\Types\LoginDataType;
+use Speedfreak\Entities\Types\UserInfoType;
 use Speedfreak\Entities\Utilities\Marshaller;
 use Speedfreak\Http\Requests;
 use Speedfreak\Http\Requests\RegisterRequest;
@@ -57,7 +58,51 @@ class UserController extends NFSWController
 
         $this->setSessionEntry("SecurityToken", $token);
 
-        return $this->sendXml(Marshaller::marshal($userInfo));
+        return Marshaller::marshal(
+            $userInfo, UserInfoType::class
+        );
+    }
+
+    /**
+     * Securely log-out the current user.
+     *
+     * @return string
+     * @throws EngineException
+     */
+    public function secureLogout()
+    {
+        $this->checkSecurityToken();
+        $this->state->removeSession((int) $this->getParam('userId'));
+
+        return '';
+    }
+
+    /**
+     * Securely log-in to a persona.
+     *
+     * @return string
+     * @throws EngineException
+     */
+    public function secureLoginPersona()
+    {
+        $this->checkSecurityToken();
+        $this->setSessionEntry('PersonaId', (int) $this->getParam('personaId'));
+
+        return '';
+    }
+
+    /**
+     * Securely log out of a persona.
+     *
+     * @return string
+     * @throws EngineException
+     */
+    public function secureLogoutPersona()
+    {
+        $this->checkSecurityToken();
+        $this->setSessionEntry('PersonaId', 0);
+
+        return '';
     }
 
     /**
@@ -80,7 +125,9 @@ class UserController extends NFSWController
         $data->setUserId($result);
         $data->setLoginToken($token);
 
-        return $this->sendXml(Marshaller::marshal($data, LoginDataType::class));
+        return Marshaller::marshal(
+            $data, LoginDataType::class
+        );
     }
 
     /**

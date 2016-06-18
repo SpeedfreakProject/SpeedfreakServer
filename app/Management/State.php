@@ -86,6 +86,16 @@ class State implements Contract
     }
 
     /**
+     * @inheritdoc
+     */
+    public function removeSession(int $userId)
+    {
+        $this->currentSessions->forget($userId);
+        $this->cache->tags(self::STATE_CACHE_TAG)
+            ->put(self::STATE_SESSIONS_CACHE_KEY, $this->currentSessions, 0);
+    }
+
+    /**
      * Write a session to the session cache.
      * This does not refresh the cache!
      *
@@ -160,10 +170,10 @@ class State implements Contract
     /**
      * @inheritdoc
      */
-    public function validateSecurityToken()
+    public function validateSecurityToken(int $customId = null)
     {
         $token = $this->getRequest()->header('securityToken');
-        $userId = (int) $this->getRequest()->header('userId');
+        $userId = $customId ?: (int) $this->getRequest()->header('userId');
 
         if (($session = $this->getSession($userId)) != null) {
             if (((string) $token) != $session->securityToken) throw new EngineException('Authorization error: Your token is invalid.');

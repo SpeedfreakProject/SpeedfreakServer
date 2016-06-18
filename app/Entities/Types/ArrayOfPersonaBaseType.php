@@ -27,6 +27,15 @@ class ArrayOfPersonaBaseType
     protected $personaBase;
 
     /**
+     * ArrayOfPersonaBaseType constructor.
+     * @param PersonaBaseType[] $personaBase
+     */
+    public function __construct(array $personaBase = [])
+    {
+        $this->personaBase = $personaBase;
+    }
+
+    /**
      * @return PersonaBaseType[]
      */
     public function getPersonaBase() : array

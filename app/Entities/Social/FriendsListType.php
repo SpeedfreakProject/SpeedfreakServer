@@ -15,14 +15,13 @@ use Speedfreak\Entities\Types\PersonaBaseType;
 /**
  * Class PersonaFriendsListType
  * @package Speedfreak\Entities\Social
- * @Serializer\XmlRoot(name="PersonaFriendsList")
  */
-class PersonaFriendsListType
+class FriendsListType
 {
     /**
      * @var FriendPersonaType[]
      * @Serializer\XmlElement(cdata=false)
-     * @Serializer\XmlList(entry="FriendPersona")
+     * @Serializer\XmlList(entry="FriendPersona",inline=true)
      * @Serializer\SerializedName("friendPersona")
      */
     protected $friendPersona = [];

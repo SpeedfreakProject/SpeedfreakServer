@@ -42,6 +42,14 @@ interface State
     public function getSession(int $userId);
 
     /**
+     * Remove a session.
+     *
+     * @param int $userId
+     * @return void
+     */
+    public function removeSession(int $userId);
+
+    /**
      * Load the current sessions from the cache.
      *
      * @return SessionVO[]
@@ -68,10 +76,10 @@ interface State
      * Validate the current security token.
      * No need for a userId parameter, it's stored in a header.
      *
+     * @param int $customId
      * @return bool
-     * @throws EngineException
      */
-    public function validateSecurityToken();
+    public function validateSecurityToken(int $customId = null);
 
     /**
      * Get the current request.

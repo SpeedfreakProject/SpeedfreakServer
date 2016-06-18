@@ -38,17 +38,24 @@ Route::group(['prefix' => 'speedfreak/Engine.svc'], function() {
     Route::get('getsocialsettings', 'DefaultController@getSocialSettings');
     Route::get('getblockeduserlist', 'DefaultController@getBlockedUserList');
     Route::get('getblockersbyusers', 'DefaultController@getBlockersByUsers');
+    Route::get('getmutualfriends', 'DefaultController@getMutualFriends');
+    Route::get('befriend', 'DefaultController@befriend');
+    Route::get('removeFriend', 'DefaultController@removeFriend');
     Route::get('heartbeat', 'DefaultController@heartbeat');
     Route::get('NewsArticles', 'DefaultController@newsArticles');
     Route::get('getsocialnetworkinfo', 'DefaultController@getSocialNetworkInfo');
     Route::get('setsocialsettings', 'DefaultController@setSocialSettings');
     Route::get('addfriendrequest', 'DefaultController@addFriendRequest');
     Route::get('sendchatannouncement', 'DefaultController@sendChatAnnouncement');
+    Route::get('blockplayer', 'DefaultController@blockPlayer');
 
     // Authentication
     Route::post('User/AuthenticateUser', 'UserController@authenticateUser');
     Route::post('User/CreateUser', 'UserController@createUser');
     Route::post('User/GetPermanentSession', 'UserController@getPermanentSession');
+    Route::post('User/SecureLoginPersona', 'UserController@secureLoginPersona');
+    Route::post('User/SecureLogout', 'UserController@secureLogout');
+    Route::post('User/SecureLogoutPersona', 'UserController@secureLogoutPersona');
 
     // Personas
     Route::get('DriverPersona/GetExpLevelPointsMap', 'DriverPersonaController@getExpLevelPointsMap');
@@ -82,6 +89,10 @@ Route::group(['prefix' => 'speedfreak/Engine.svc'], function() {
     Route::get('Reporting/SendHardwareInfo', 'ReportingController@sendHardwareInfo');
     Route::get('Reporting/SendUserSettings', 'ReportingController@sendUserSettings');
     Route::get('Reporting/SendClientPingTime', 'ReportingController@sendClientPingTime');
+
+    // Security
+    Route::get('security/generateWebToken', 'SecurityController@generateWebToken');
+    Route::get('security/fraudConfig', 'SecurityController@fraudConfig');
 
     // SpeedAPI
     Route::get('SpeedfreakAPI/getPersonaData', 'SpeedfreakAPIController@getPersonaData');
