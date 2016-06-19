@@ -48,6 +48,30 @@ class Persona extends Model implements IValidationEntity
     }
 
     /**
+     * A persona can have many achievements.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function achievements()
+    {
+        return $this->belongsToMany(Achievement::class)
+            ->withTimestamps()
+            ->withPivot('achievedOn');
+    }
+
+    /**
+     * A persona belongs to many ranks
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function ranks()
+    {
+        return $this->belongsToMany(AchievementRank::class)
+            ->withPivot('achievedOn')
+            ->withTimestamps();
+    }
+
+    /**
      * Get the persona's reputation.
      *
      * @return float

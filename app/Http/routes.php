@@ -93,6 +93,9 @@ Route::group(['prefix' => 'speedfreak/Engine.svc'], function() {
     Route::get('security/generateWebToken', 'SecurityController@generateWebToken');
     Route::get('security/fraudConfig', 'SecurityController@fraudConfig');
 
+    // Achievements
+    Route::get('achievements/loadall', 'AchievementsController@loadAll');
+
     // SpeedAPI
     Route::get('SpeedfreakAPI/getPersonaData', 'SpeedfreakAPIController@getPersonaData');
     Route::get('SpeedfreakAPI/getProductData', 'SpeedfreakAPIController@getProductData');
