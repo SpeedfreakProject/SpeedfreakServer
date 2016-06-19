@@ -1,3 +1,5 @@
+/app/Console/Commands/ServerChecker.php
+/nfs-ips.txt
 /.idea
 /vendor
 /node_modules

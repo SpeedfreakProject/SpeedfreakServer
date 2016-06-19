@@ -15,7 +15,10 @@ class CreateAchievementPersonaTable extends Migration
         Schema::create('achievement_persona', function (Blueprint $table) {
             $table->integer('persona_id');
             $table->integer('achievement_id');
-            $table->timestamp('awardedAt');
+            $table->timestamp('awardedAt')->nullable();
+            $table->boolean('canProgress');
+            $table->integer('currentValue');
+            $table->string('progressText');
             $table->timestamps();
         });
     }

@@ -56,7 +56,7 @@ class Persona extends Model implements IValidationEntity
     {
         return $this->belongsToMany(Achievement::class)
             ->withTimestamps()
-            ->withPivot('achievedOn');
+            ->withPivot('awardedAt', 'canProgress', 'currentValue', 'progressText');
     }
 
     /**
@@ -67,7 +67,7 @@ class Persona extends Model implements IValidationEntity
     public function ranks()
     {
         return $this->belongsToMany(AchievementRank::class)
-            ->withPivot('achievedOn')
+            ->withPivot('achievedOn', 'state')
             ->withTimestamps();
     }
 

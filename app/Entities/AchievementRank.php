@@ -2,7 +2,9 @@
 
 namespace Speedfreak\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Speedfreak\Entities\Achievements\AchievementRankPacketType;
 use Speedfreak\Entities\Achievements\AchievementRankPersonaPivot;
 
@@ -20,6 +22,23 @@ class AchievementRank extends Model
         return $this->belongsToMany(Persona::class)
             ->withTimestamps()
             ->withPivot('state', 'achievedOn');
+    }
+
+    public function getType(Pivot $pivot = null) : AchievementRankPacketType
+    {
+        new AchievementRankPacketType(
+            $pivot ? Carbon::parse($pivot->achievedOn)->toIso8601String() : 'N/A',
+            $this->getKey(),
+            $this->isRare,
+            $this->rank,
+            $this->points,
+            $this->rarity,
+            $this->rewardDescription,
+            $this->rewardType,
+            $this->rewardVisualStyle,
+            $pivot ? $pivot->state : 'N/A',
+            $this->thresholdValue
+        );
     }
 
     /**

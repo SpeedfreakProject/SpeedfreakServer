@@ -16,7 +16,7 @@ class CreateAchievementRankPersonaTable extends Migration
             $table->integer('persona_id');
             $table->integer('achievement_rank_id');
             $table->string('state')->default('Locked');
-            $table->timestamp('achievedOn');
+            $table->timestamp('achievedOn')->nullable();
             $table->timestamps();
         });
     }

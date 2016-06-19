@@ -11,15 +11,18 @@ use Speedfreak\Entities\Achievements\AchievementRankPacketType;
 use Speedfreak\Entities\Achievements\AchievementRanksType;
 use Speedfreak\Entities\Achievements\AchievementsPacketType;
 use Speedfreak\Entities\Achievements\DefinitionsType;
+use Speedfreak\Entities\Repositories\PersonaRepository;
 use Speedfreak\Entities\Utilities\Marshaller;
 use Speedfreak\Http\Requests;
 
 class AchievementsController extends Controller
 {
-    public function loadAll(AchievementManager $achievementManager)
+    public function loadAll(AchievementManager $achievementManager, PersonaRepository $personaRepository)
     {
         return Marshaller::marshal(
-            $achievementManager->generatePacket(), AchievementsPacketType::class
+            $achievementManager->getAchievementsForPersona(
+                $personaRepository->findById(100)
+            ), AchievementsPacketType::class
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace Speedfreak\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Collection;
 use Speedfreak\Entities\Achievements\AchievementDefinitionPacketType;
 use Speedfreak\Entities\Achievements\AchievementRankPacketType;
@@ -10,6 +11,8 @@ use Speedfreak\Entities\Achievements\AchievementRanksType;
 
 class Achievement extends Model
 {
+    protected $primaryKey = 'achievementDefinitionId';
+
     /**
      * Many personas can have the achievement.
      *
@@ -33,36 +36,31 @@ class Achievement extends Model
         return $this->hasMany(AchievementRank::class);
     }
 
-    public function getDefinitionPacket() : AchievementDefinitionPacketType
+    public function getDefinitionPacket(Pivot $pivot = null) : AchievementDefinitionPacketType
     {
         return new AchievementDefinitionPacketType(
             $this->getKey(),
             new AchievementRanksType($this->getRankTypes()->all()),
-            $this->badgeDefinitionId,
-            false,
-            0,
+            $this->getKey(),
+            $pivot ? $pivot->canProgress : false,
+            $pivot ? $pivot->currentValue : 0,
             true,
-            '',
+            $this->progressText,
             'None'
         );
+    }
+
+    public function getRanksForPersona(Persona $persona) : Collection
+    {
+        return collect($this->ranks)->filter(function(AchievementRank $rank) use ($persona) {
+            return collect($rank->personas->pluck('id'))->contains($persona->getKey());
+        });
     }
 
     protected function getRankTypes() : Collection
     {
         return collect($this->ranks)->map(function(AchievementRank $achievementRank) {
-            return new AchievementRankPacketType(
-                'N/A',
-                $achievementRank->getKey(),
-                $achievementRank->isRare,
-                $achievementRank->rank,
-                $achievementRank->points,
-                $achievementRank->rarity,
-                $achievementRank->rewardDescription,
-                $achievementRank->rewardType,
-                $achievementRank->rewardVisualStyle,
-                'N/A',
-                $achievementRank->thresholdValue
-            );
+            return $achievementRank->getType();
         });
     }
 }

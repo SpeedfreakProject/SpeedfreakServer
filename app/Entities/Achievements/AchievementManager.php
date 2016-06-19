@@ -34,6 +34,15 @@ class AchievementManager implements IAchievementManager
                     Carbon::now()->toIso8601String(), -1, true, 1337, 1200000, 500, 'hacker!!!!!!', 'cash'
                 )
             ])),
+        ]), new BadgesType([
+            new BadgeDefinitionPacketType(
+                'ACH_ICON_BG_COMPETE',
+                1,
+                'ACH_ICON_FRAME',
+                'GM_ACHIEVEMENT_0000013D',
+                'ACH_INCUR_COSTTOSTATE',
+                'GM_ACHIEVEMENT_00000026'
+            )
         ]));
     }
 
@@ -45,11 +54,32 @@ class AchievementManager implements IAchievementManager
      */
     public function getAchievementsForPersona(Persona $persona) : AchievementsPacketType
     {
-        return new AchievementsPacketType(new DefinitionsType(
-            collect($persona->achievements)->map(function(Achievement $achievement) {
-                return $achievement->getDefinitionPacket();
-            })->all()
-        ), new BadgesType());
+        return new AchievementsPacketType(
+            new DefinitionsType(
+                collect($persona->achievements)->map(function(Achievement $achievement) use ($persona) {
+                    return new AchievementDefinitionPacketType(
+                        $achievement->getKey(),
+                        new AchievementRanksType($achievement->getRanksForPersona($persona)->all()),
+                        $achievement->badgeDefinitionId,
+                        $achievement->pivot->canProgress,
+                        $achievement->pivot->currentValue,
+                        true,
+                        $achievement->pivot->progressText,
+                        $achievement->statConversion
+                    );
+                })->all()
+            ),
+            new BadgesType([
+                new BadgeDefinitionPacketType(
+                    'ACH_ICON_BG_COMPETE',
+                    1,
+                    'ACH_ICON_FRAME',
+                    'GM_ACHIEVEMENT_0000013D',
+                    'ACH_INCUR_COSTTOSTATE',
+                    'GM_ACHIEVEMENT_00000026'
+                )
+            ])
+        );
     }
 
     /**

@@ -52,7 +52,7 @@ class UserController extends NFSWController
     public function getPermanentSession(UserRepository $userRepository)
     {
         $userId = (int) $this->getHeader('userId');
-        $token = shuffleString($this->getSecureRandomText());
+        $token = '1234567890123456' . shuffleString($this->getSecureRandomText());
         $this->state->validateSecurityToken();
         $userInfo = $userRepository->getPermanentSession($userId, $token);
 
