@@ -23,8 +23,7 @@ class ProductRepository implements Contract
 
     public function findByProductId(string $productId)
     {
-        return Product::query()->where('productId', '=', $productId)
-            ->first();
+        return Product::firstWhere(['productId' => $productId]);
     }
 
     public function delete(int $id) : bool

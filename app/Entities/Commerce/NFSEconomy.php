@@ -100,6 +100,7 @@ class NFSEconomy implements INFSEconomy
         }
 
         $persona->{$remove ? 'decrement' : 'increment'}($currencyToUse, $amount);
+        $persona->save();
 
         return true;
     }

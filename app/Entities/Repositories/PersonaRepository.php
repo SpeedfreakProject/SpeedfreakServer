@@ -12,6 +12,7 @@ namespace Speedfreak\Entities\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Speedfreak\Contracts\Repositories\PersonaRepository as Contract;
+use Speedfreak\Entities\OwnedCar;
 use Speedfreak\Entities\Persona;
 
 class PersonaRepository implements Contract

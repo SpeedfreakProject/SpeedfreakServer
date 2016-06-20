@@ -40,29 +40,21 @@ class PersonaBO implements Contract
      * @var PersonaRepository
      */
     private $personaRepository;
-    
-    /**
-     * @var NFSBasket
-     */
-    private $nfsBasket;
 
     /**
      * PersonaBO constructor.
      * @param OwnedCarRepository $ownedCarRepository
      * @param ProductRepository $productRepository
      * @param PersonaRepository $personaRepository
-     * @param NFSBasket $nfsBasket
      */
     public function __construct(
         OwnedCarRepository $ownedCarRepository,
         ProductRepository $productRepository,
-        PersonaRepository $personaRepository,
-        NFSBasket $nfsBasket)
+        PersonaRepository $personaRepository)
     {
         $this->ownedCarRepository = $ownedCarRepository;
         $this->productRepository = $productRepository;
         $this->personaRepository = $personaRepository;
-        $this->nfsBasket = $nfsBasket;
     }
 
     public function carslots(int $personaId) : CarSlotInfoTrans
@@ -99,6 +91,13 @@ class PersonaBO implements Contract
 
     public function basket(int $personaId, string $productId) : CommerceSessionResultTransType
     {
+        $product = $this->productRepository->findByProductId($productId);
+
+        if ($product && $product->categoryName == 'NFSW_NA_EP_PRESET_RIDES_ALL_Category') {
+            // if it's a car
+            return app(NFSBasket::class)->purchaseCar($this->personaRepository->findById($personaId), $productId);
+        }
+
         return new CommerceSessionResultTransType;
     }
 
@@ -152,7 +151,7 @@ class PersonaBO implements Contract
 
     public function sellCar(int $personaId, int $carId)
     {
-        $this->nfsBasket->sellCar(
+        app(NFSBasket::class)->sellCar(
             $this->personaRepository->findById($personaId), $carId
         );
 

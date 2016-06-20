@@ -18,6 +18,8 @@ use Speedfreak\Entities\CustomCar;
 use Speedfreak\Entities\OwnedCar;
 use Speedfreak\Entities\Persona;
 use Speedfreak\Entities\Repositories\BasketDefinitionRepository;
+use Speedfreak\Entities\Repositories\OwnedCarRepository;
+use Speedfreak\Entities\Repositories\PersonaRepository;
 use Speedfreak\Entities\Repositories\ProductRepository;
 use Speedfreak\Entities\Types\CommerceResultTransType;
 use Speedfreak\Entities\Types\CustomCarType;
@@ -55,20 +57,34 @@ class NFSBasket implements INFSBasket
      * @var PersonaBO
      */
     private $personaBO;
+    
+    /**
+     * @var OwnedCarRepository
+     */
+    private $ownedCarRepository;
+
+    /**
+     * @var PersonaRepository
+     */
+    private $personaRepository;
 
     /**
      * NFSBasket constructor.
      * @param Writer $logger
      * @param NFSEconomy $economy
      * @param BasketDefinitionRepository $basketDefinitionRepository
+     * @param OwnedCarRepository $ownedCarRepository
      * @param ProductRepository $productRepository
+     * @param PersonaRepository $personaRepository
      * @param PersonaBO $personaBO
      */
     public function __construct(
         Writer $logger,
         NFSEconomy $economy,
         BasketDefinitionRepository $basketDefinitionRepository,
+        OwnedCarRepository $ownedCarRepository,
         ProductRepository $productRepository,
+        PersonaRepository $personaRepository,
         PersonaBO $personaBO
     ) {
         $this->logger = $logger;
@@ -76,6 +92,8 @@ class NFSBasket implements INFSBasket
         $this->basketDefinitionRepository = $basketDefinitionRepository;
         $this->productRepository = $productRepository;
         $this->personaBO = $personaBO;
+        $this->ownedCarRepository = $ownedCarRepository;
+        $this->personaRepository = $personaRepository;
     }
 
     /**
@@ -170,11 +188,14 @@ class NFSBasket implements INFSBasket
         $purchasedCarsType = new PurchasedCarsType;
 
         if (!$product) {
-            $this->logger->warning('Tried to purchase a car that does not exist.');
+            $this->logger->warning(sprintf(
+                'Persona %s tried to purchase a car that does not exist: %s', $persona->getKey(), $productId
+            ));
+
             return null;
         }
 
-        $this->economy->transaction($persona, $product->price, $product->currency == 'CASH' ? 0 : 1, true);
+        $this->economy->transaction($persona, $product->price, NFSEconomy::CURRENCY_IGC, true);
 
         $walletsType = new WalletsType;
         $cashWallet = new WalletTransType;
@@ -200,7 +221,7 @@ class NFSBasket implements INFSBasket
             $ownedCar = new OwnedCar;
 
             /* @var \Speedfreak\Entities\Types\CustomCarType $customCar */
-            $customCar = $basketDef->ownedCar->customCar;
+            $customCar = $basketDef->ownedCarTrans->getCustomCar();
             $customCarEntity = new CustomCar;
 
             $customCarEntity->forceFill([
@@ -224,12 +245,13 @@ class NFSBasket implements INFSBasket
                 'durability' => 100,
                 'expirationDate' => null,
                 'heatLevel' => 0,
-                'ownershipType' => 'PresetCar'
+                'ownershipType' => 'PresetCar',
+                'productId' => $productId
             ]);
 
             /* @var OwnedCar $ownedCar */
-            $ownedCar = $ownedCar->save();
-            $this->personaBO->changeDefaultCar((int) $persona->getKey(), (int) $ownedCar->getKey());
+            $ownedCar->save();
+            $this->personaBO->changeDefaultCar($persona->getKey(), (int) $ownedCar->fresh()->getKey());
             $purchasedCarsType->setOwnedCarTrans($ownedCar->getOwnedCarType());
             $commerceResultType->setPurchasedCars($purchasedCarsType);
             $commerceResultType->setStatus(ShoppingCartPurchaseResult::aSuccess);

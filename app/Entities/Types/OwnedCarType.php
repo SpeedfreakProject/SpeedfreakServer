@@ -22,6 +22,7 @@ class OwnedCarType
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("Durability")
+     * @Serializer\Type("integer")
      */
     protected $durability;
 
@@ -29,6 +30,7 @@ class OwnedCarType
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("Heat")
+     * @Serializer\Type("integer")
      */
     protected $heat;
 
@@ -36,6 +38,7 @@ class OwnedCarType
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("ExpirationDate")
+     * @Serializer\Type("string")
      */
     protected $expirationDate;
 
@@ -43,6 +46,7 @@ class OwnedCarType
      * @var int
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("UniqueCarId")
+     * @Serializer\Type("integer")
      */
     protected $uniqueCarId;
 
@@ -50,6 +54,7 @@ class OwnedCarType
      * @var string
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("OwnershipType")
+     * @Serializer\Type("string")
      */
     protected $ownershipType;
 
@@ -58,6 +63,7 @@ class OwnedCarType
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("CustomCars")
      * @Serializer\XmlList(entry="CustomCarTrans")
+     * @Serializer\Type("array<Speedfreak\Entities\Types\CustomCarType>")
      */
     protected $customCars;
 
@@ -65,6 +71,7 @@ class OwnedCarType
      * @var CustomCarType
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\SerializedName("CustomCar")
+     * @Serializer\Type("Speedfreak\Entities\Types\CustomCarType")
      */
     protected $customCar;
 

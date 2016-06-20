@@ -11,6 +11,7 @@
 namespace Speedfreak\Contracts\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
+use Speedfreak\Entities\Persona;
 
 interface PersonaRepository extends BaseRepository
 {
