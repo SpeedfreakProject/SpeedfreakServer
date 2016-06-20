@@ -10,6 +10,7 @@
 
 namespace Speedfreak\Entities\Business;
 
+use Speedfreak\Entities\Commerce\NFSBasket;
 use Speedfreak\Entities\OwnedCar;
 use Speedfreak\Entities\Repositories\OwnedCarRepository;
 use Speedfreak\Entities\Repositories\PersonaRepository;
@@ -39,21 +40,29 @@ class PersonaBO implements Contract
      * @var PersonaRepository
      */
     private $personaRepository;
+    
+    /**
+     * @var NFSBasket
+     */
+    private $nfsBasket;
 
     /**
      * PersonaBO constructor.
      * @param OwnedCarRepository $ownedCarRepository
      * @param ProductRepository $productRepository
      * @param PersonaRepository $personaRepository
+     * @param NFSBasket $nfsBasket
      */
     public function __construct(
         OwnedCarRepository $ownedCarRepository,
         ProductRepository $productRepository,
-        PersonaRepository $personaRepository)
+        PersonaRepository $personaRepository,
+        NFSBasket $nfsBasket)
     {
         $this->ownedCarRepository = $ownedCarRepository;
         $this->productRepository = $productRepository;
         $this->personaRepository = $personaRepository;
+        $this->nfsBasket = $nfsBasket;
     }
 
     public function carslots(int $personaId) : CarSlotInfoTrans
@@ -121,7 +130,7 @@ class PersonaBO implements Contract
         $i = 0;
 
         foreach($ownedCars as $ownedCar) {
-            if ($ownedCar->uniqueCarId == $defaultCarId) {
+            if ($ownedCar->getKey() == $defaultCarId) {
                 break;
             }
             $i++;
@@ -143,7 +152,9 @@ class PersonaBO implements Contract
 
     public function sellCar(int $personaId, int $carId)
     {
-        OwnedCar::findByIdOrFail($carId)->delete();
+        $this->nfsBasket->sellCar(
+            $this->personaRepository->findById($personaId), $carId
+        );
 
         return $this->defaultCar($personaId);
     }

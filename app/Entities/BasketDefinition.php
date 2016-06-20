@@ -11,8 +11,22 @@
 namespace Speedfreak\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Speedfreak\Entities\Traits\IdLookup;
+use Speedfreak\Entities\Types\OwnedCarType;
+use Speedfreak\Entities\Utilities\Marshaller;
 
 class BasketDefinition extends Model
 {
-    //
+    use IdLookup;
+
+    /**
+     * Get the owned car XML as an object
+     *
+     * @param string $ownedCarTrans
+     * @return OwnedCarType
+     */
+    public function getOwnedCarTransAttribute(string $ownedCarTrans) : OwnedCarType
+    {
+        return Marshaller::unmarshal($ownedCarTrans, OwnedCarType::class);
+    }
 }

@@ -31,4 +31,34 @@ trait IdLookup
     {
         return self::query()->findOrFail($id);
     }
+
+    /**
+     * Get the first model where the given fields are matched.
+     *
+     * @param array $fields
+     * @param array $columns
+     * @return static
+     */
+    public static function firstWhere(array $fields = [], array $columns = ['*'])
+    {
+        /* @var \Illuminate\Database\Eloquent\Builder $builder */
+        $builder = self::query();
+
+        foreach($fields as $key => $value) {
+            $builder->where($key, self::parseOperator($value), $value);
+        }
+
+        return $builder->first($columns);
+    }
+
+    protected static function parseOperator(string $value) : string
+    {
+        preg_match('/(<|>)[A-Za-z0-9]+/', $value, $matches, 0);
+
+        if (count($matches) > 0) {
+            return $matches[0];
+        }
+
+        return '=';
+    }
 }

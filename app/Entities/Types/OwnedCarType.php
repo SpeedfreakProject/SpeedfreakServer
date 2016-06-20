@@ -62,6 +62,13 @@ class OwnedCarType
     protected $customCars;
 
     /**
+     * @var CustomCarType
+     * @Serializer\XmlElement(cdata=false)
+     * @Serializer\SerializedName("CustomCar")
+     */
+    protected $customCar;
+
+    /**
      * @return int
      */
     public function getDurability()
@@ -155,5 +162,21 @@ class OwnedCarType
     public function setCustomCars($customCars)
     {
         $this->customCars = $customCars;
+    }
+
+    /**
+     * @return CustomCarType
+     */
+    public function getCustomCar()
+    {
+        return $this->customCar;
+    }
+
+    /**
+     * @param CustomCarType $customCar
+     */
+    public function setCustomCar($customCar)
+    {
+        $this->customCar = $customCar;
     }
 }

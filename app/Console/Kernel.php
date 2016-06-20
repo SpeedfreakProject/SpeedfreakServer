@@ -25,7 +25,6 @@ class Kernel extends ConsoleKernel
         Commands\ImportData::class,
         Commands\Comm\StartSocket::class,
         Commands\Comm\InstallSocketDaemon::class,
-        Commands\ServerChecker::class,
     ];
 
     /**

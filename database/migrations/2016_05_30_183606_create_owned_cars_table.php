@@ -16,7 +16,7 @@ class CreateOwnedCarsTable extends Migration
             $table->smallInteger('durability')->nullable();
             $table->smallInteger('heatLevel')->nullable();
             $table->string('expirationDate')->nullable();
-            $table->bigInteger('uniqueCarId');
+            $table->bigIncrements('uniqueCarId');
             $table->bigInteger('personaId')->nullable();
             $table->string('ownershipType')->nullable();
             $table->timestamps();

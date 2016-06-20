@@ -22,7 +22,7 @@ class PersonaRepository implements Contract
      */
     public function findById(int $id)
     {
-        return Persona::findByIdOrFail($id);
+        return Persona::findByIdOrFail($id)->fresh(['ownedCars', 'achievements', 'ranks', 'user']);
     }
 
     public function delete(int $id) : bool

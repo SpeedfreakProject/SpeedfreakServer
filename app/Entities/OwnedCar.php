@@ -22,6 +22,15 @@ class OwnedCar extends Model
 
     protected $dates = ['expirationDate'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function(OwnedCar $car) {
+            $car->customCar()->delete();
+        });
+    }
+
     /**
      * A persona owns a car.
      *

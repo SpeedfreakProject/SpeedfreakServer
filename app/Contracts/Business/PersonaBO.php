@@ -19,8 +19,22 @@ interface PersonaBO
 {
     public function carslots(int $personaId) : CarSlotInfoTrans;
 
+    /**
+     * Handle a "commerce" transaction.
+     *
+     * @param int $personaId
+     * @param UpdatedCarType $updatedCar
+     * @return CommerceSessionResultTransType
+     */
     public function commerce(int $personaId, UpdatedCarType $updatedCar) : CommerceSessionResultTransType;
 
+    /**
+     * Handle a "basket" transaction.
+     *
+     * @param int $personaId
+     * @param string $productId
+     * @return CommerceSessionResultTransType
+     */
     public function basket(int $personaId, string $productId) : CommerceSessionResultTransType;
 
     public function defaultCar(int $personaId);
